@@ -7,7 +7,7 @@ namespace TheExchangeApi.Controllers
     [Route("test")]
     public class TestController : ControllerBase
     {
-        [HttpGet("one")]
+        [HttpGet]
         public string Get()
         {
             return "Hello from API";
