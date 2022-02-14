@@ -10,7 +10,7 @@ namespace TheExchangeApi.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Hello from API";
+            return "Hello from the API";
         }
     }
 }
