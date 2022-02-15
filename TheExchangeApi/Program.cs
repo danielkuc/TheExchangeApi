@@ -1,15 +1,21 @@
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
+// CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("myFrontendPolicy",
+        builder =>
+        {
+            builder.WithOrigins("https://the-exchange.netlify.app");
+        }   
+    );
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options => options.AddPolicy("corsapp", builder =>
-{
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
 
 var app = builder.Build();
 
@@ -20,7 +26,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("corsapp");
+//calling CORS service initialiser
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
