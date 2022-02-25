@@ -7,7 +7,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("myFrontendPolicy",
         builder =>
         {
-            builder.WithOrigins("https://the-exchange.netlify.app", "http://localhost:3000");
+            builder.WithOrigins("https://exchange-shop.netlify.app/", "http://localhost:3000");
         }   
     );
 });
