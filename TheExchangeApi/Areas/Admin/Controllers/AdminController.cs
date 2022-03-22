@@ -2,17 +2,20 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TheExchangeApi.Controllers
+namespace TheExchangeApi.Areas.Admin.Controllers
 {
-    [Route("test")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class TestController : ControllerBase
+    public class AdminController : ControllerBase
     {
         [EnableCors("myFrontendPolicy")]
         [HttpGet]
         public string Get()
         {
-            return "Hello from the API";
+            return "Hello from the Admin Controller";
         }
+
+
+        //crud Product
     }
 }
