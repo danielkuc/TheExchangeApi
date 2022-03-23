@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using MongoDB.Driver;
+using Microsoft.Extensions.Configuration;
 
 namespace TheExchangeApi.Areas.Services
 {
@@ -8,8 +9,10 @@ namespace TheExchangeApi.Areas.Services
     {
         public ProductServices()
         {
-            var client = new MongoClient("mongodb+srv://admin:Testowanie1@theexchangedb.mqzo6.mongodb.net/TheExchangeDB?retryWrites=true&w=majority");
-            var database = client.GetDatabase("TheExchangeDB");
+            var ConnectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ProductsDbSettings")["ConnectionString"];
+            var DbName = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ProductsDbSettings")["DbName"];
+            var client = new MongoClient(ConnectionString);
+            var database = client.GetDatabase(DbName);
         }
     }
 }
