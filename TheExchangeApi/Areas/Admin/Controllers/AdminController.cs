@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TheExchangeApi.Areas.Services;
+using TheExchangeApi.Models;
 
 namespace TheExchangeApi.Areas.Admin.Controllers
 {
@@ -8,6 +10,13 @@ namespace TheExchangeApi.Areas.Admin.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        private readonly ProductService _productService;
+
+        public AdminController(ProductService productService)
+        {
+            _productService = productService;
+        }
+
         [EnableCors("myFrontendPolicy")]
         [HttpGet]
         public string Get()
@@ -17,5 +26,12 @@ namespace TheExchangeApi.Areas.Admin.Controllers
 
 
         //crud Product
+        [EnableCors("myFrontendPolicy")]
+        [HttpPost]
+        public ActionResult<Product> Create(Product product)
+        {
+            _productService.Create(product);
+            return CreatedAtRoute("GetProduct", product);
+        }
     }
 }
