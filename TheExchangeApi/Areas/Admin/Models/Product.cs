@@ -1,11 +1,24 @@
-﻿namespace TheExchangeApi.Models
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace TheExchangeApi.Models
 {
     public class Product
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double Price { get; set; }
-        public string Category { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = string.Empty;
+
+        [BsonElement("name")]
+        public string Name { get; set; } = string.Empty;
+
+        [BsonElement("description")]
+        public string Description { get; set; } = string.Empty;
+
+        [BsonElement("price")]
+        public double Price { get; set; } = 0.00;
+
+        [BsonElement("category")]
+        public string Category { get; set; } = string.Empty ;
     }
 }

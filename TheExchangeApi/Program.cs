@@ -1,7 +1,26 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using TheExchangeApi.Areas.Admin.Models;
+using TheExchangeApi.Areas.Admin.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
+// get section "ProductStoreDatabaseSettings" from appsettings.json
+builder.Services.Configure<ProductStoreDatabaseSettings>(
+    builder.Configuration.GetSection(nameof(ProductStoreDatabaseSettings)));
+
+//dependency injection: whenever IProductStoreDatabaseSettings is required, provide instance of ProductStoreDatabaseSettings 
+builder.Services.AddSingleton<IProductStoreDatabaseSettings>(sp =>
+    sp.GetRequiredService<IOptions<ProductStoreDatabaseSettings>>().Value);
+
+//provide IMongoClient with ConnectionString
+builder.Services.AddSingleton<IMongoClient>(s =>
+    new MongoClient(builder.Configuration.GetValue<string>("ProductStoreDatabaseSettings:ConnectionString")));
+
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
 builder.Services.AddCors(options =>
