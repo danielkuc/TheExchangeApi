@@ -44,14 +44,35 @@ namespace TheExchangeApi.Areas.Admin.Controllers
 
         // PUT api/<ProductsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(string id, [FromBody] Product product)
         {
+            var existingProduct = productService.Get(id);
+            if (existingProduct == null)
+            {
+                return NotFound("Product not found");
+            }
+
+            productService.Update(id, product);
+
+            return NoContent();
+
         }
 
         // DELETE api/<ProductsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(string id)
         {
+            var product = productService.Get(id);
+
+            if (product == null)
+            {
+                return NotFound("Product not found");
+            }
+
+            productService.Remove(id);
+
+            return Ok("Product removed");
+
         }
     }
 }
