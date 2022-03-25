@@ -11,15 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ProductStoreDatabaseSettings>(
     builder.Configuration.GetSection(nameof(ProductStoreDatabaseSettings)));
 
-//dependency injection: whenever IProductStoreDatabaseSettings is required, provide instance of ProductStoreDatabaseSettings 
-builder.Services.AddSingleton<IProductStoreDatabaseSettings>(sp =>
-    sp.GetRequiredService<IOptions<ProductStoreDatabaseSettings>>().Value);
+//dependency injection: whenever IProductStoreDatabaseSettings is required, provide instance of ProductStoreDatabaseSettings class 
+builder.Services.AddSingleton<IProductStoreDatabaseSettings>(serviceProvider =>
+    serviceProvider.GetRequiredService<IOptions<ProductStoreDatabaseSettings>>().Value);
 
-//provide IMongoClient with ConnectionString
+//provide IMongoClient with ConnectionString from appsettings.json
 builder.Services.AddSingleton<IMongoClient>(s =>
     new MongoClient(builder.Configuration.GetValue<string>("ProductStoreDatabaseSettings:ConnectionString")));
 
-
+// tie interface with it's implementation
 builder.Services.AddScoped<IProductService, ProductService>();
 
 // CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
