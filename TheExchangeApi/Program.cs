@@ -53,9 +53,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //authorisation, makes sure JWT has the required scope
 builder.Services.AddAuthorization(o =>
 {
-    o.AddPolicy("todo:read-write", p => p.
+    o.AddPolicy("product:read-write", p => p.
         RequireAuthenticatedUser().
-        RequireClaim("scope", "todo:read-write"));
+        RequireClaim("scope", "product:read-write"));
 });
 
 var app = builder.Build();
@@ -71,6 +71,8 @@ if (app.Environment.IsDevelopment())
 //calling CORS service initialiser
 app.UseCors();
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
