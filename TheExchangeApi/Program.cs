@@ -7,13 +7,13 @@ using TheExchangeApi.Areas.Admin.Services;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-// get section "ProductStoreDatabaseSettings" from appsettings.json
-builder.Services.Configure<ProductStoreDatabaseSettings>(
-    builder.Configuration.GetSection(nameof(ProductStoreDatabaseSettings)));
+// get section "ProductDatabaseSettings" from appsettings.json
+builder.Services.Configure<ProductDatabaseSettings>(
+    builder.Configuration.GetSection(nameof(ProductDatabaseSettings)));
 
-//dependency injection: whenever IProductStoreDatabaseSettings is required, provide instance of ProductStoreDatabaseSettings class 
-builder.Services.AddSingleton<IProductStoreDatabaseSettings>(serviceProvider =>
-    serviceProvider.GetRequiredService<IOptions<ProductStoreDatabaseSettings>>().Value);
+//dependency injection: whenever IProductDatabaseSettings is required, provide instance of ProductDatabaseSettings class 
+builder.Services.AddSingleton<IProductDatabaseSettings>(serviceProvider =>
+    serviceProvider.GetRequiredService<IOptions<ProductDatabaseSettings>>().Value);
 
 //provide IMongoClient with ConnectionString from appsettings.json
 builder.Services.AddSingleton<IMongoClient>(s =>

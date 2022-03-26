@@ -8,7 +8,7 @@ namespace TheExchangeApi.Areas.Admin.Services
     {
         private IMongoCollection<Product> _products;
 
-        public ProductService(IProductStoreDatabaseSettings settings, IMongoClient mongoClient)
+        public ProductService(IProductDatabaseSettings settings, IMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _products = database.GetCollection<Product>(settings.ProductCollectionName);

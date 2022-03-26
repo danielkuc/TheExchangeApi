@@ -1,6 +1,6 @@
 ﻿namespace TheExchangeApi.Areas.Admin.Models
 {
-    public interface IProductStoreDatabaseSettings
+    public interface IProductDatabaseSettings
     {
         string ProductCollectionName { get; set; }
         string ConnectionString { get; set; }
