@@ -17,7 +17,7 @@ builder.Services.AddSingleton<IProductDatabaseSettings>(serviceProvider =>
 
 //provide IMongoClient with ConnectionString from appsettings.json
 builder.Services.AddSingleton<IMongoClient>(s =>
-    new MongoClient(builder.Configuration.GetValue<string>("ProductStoreDatabaseSettings:ConnectionString")));
+    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabaseSettings:ConnectionString")));
 
 // tie interface with it's implementation
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -51,9 +51,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      });
 
 //authorisation, makes sure JWT has the required scope
-builder.Services.AddAuthorization(o =>
+builder.Services.AddAuthorization(options =>
 {
-    o.AddPolicy("product:read-write", p => p.
+    options.AddPolicy("product:read-write", policy => policy.
         RequireAuthenticatedUser().
         RequireClaim("scope", "product:read-write"));
 });

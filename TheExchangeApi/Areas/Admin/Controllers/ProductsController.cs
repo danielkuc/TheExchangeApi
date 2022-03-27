@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using TheExchangeApi.Areas.Admin.Services;
 using TheExchangeApi.Models;
 
@@ -19,6 +21,8 @@ namespace TheExchangeApi.Areas.Admin.Controllers
 
         // GET: api/<ProductsController>
         [HttpGet]
+        [EnableCors("myFrontendPolicy")]
+        [Authorize("product:read-write")]
         public ActionResult<List<Product>> Get() => productService.Get();
 
         // GET api/<ProductsController>/5
