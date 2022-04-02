@@ -7,20 +7,20 @@ using TheExchangeApi.Areas.Admin.Services;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-// get section "ProductDatabaseSettings" from appsettings.json
-builder.Services.Configure<ProductDatabaseSettings>(
-    builder.Configuration.GetSection(nameof(ProductDatabaseSettings)));
+//// get section "ProductDatabaseSettings" from appsettings.json
+//builder.Services.Configure<ProductDatabaseSettings>(
+//    builder.Configuration.GetSection(nameof(ProductDatabaseSettings)));
 
-//dependency injection: whenever IProductDatabaseSettings is required, provide instance of ProductDatabaseSettings class 
-builder.Services.AddSingleton<IProductDatabaseSettings>(serviceProvider =>
-    serviceProvider.GetRequiredService<IOptions<ProductDatabaseSettings>>().Value);
+////dependency injection: whenever IProductDatabaseSettings is required, provide instance of ProductDatabaseSettings class 
+//builder.Services.AddSingleton<IProductDatabaseSettings>(serviceProvider =>
+//    serviceProvider.GetRequiredService<IOptions<ProductDatabaseSettings>>().Value);
 
-//provide IMongoClient with ConnectionString from appsettings.json
-builder.Services.AddSingleton<IMongoClient>(s =>
-    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabaseSettings:ConnectionString")));
+////provide IMongoClient with ConnectionString from appsettings.json
+//builder.Services.AddSingleton<IMongoClient>(s =>
+//    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabaseSettings:ConnectionString")));
 
-// tie interface with it's implementation
-builder.Services.AddScoped<IProductService, ProductService>();
+//// tie interface with it's implementation
+//builder.Services.AddScoped<IProductService, ProductService>();
 
 // CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
 builder.Services.AddCors(options =>
