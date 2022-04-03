@@ -8,7 +8,7 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
         //All the data needed to execute
         public record ProductByIdQuery(int Id) : IRequest<RetreivedProduct>;
 
-        public class Handler : IRequestHandler<ProductByIdQuery, RetreivedProduct>;
+        public class Handler : IRequestHandler<ProductByIdQuery, RetreivedProduct>
 {
             public Task<RetreivedProduct> Handle(ProductByIdQuery request, CancellationToken cancellationToken)
             {
