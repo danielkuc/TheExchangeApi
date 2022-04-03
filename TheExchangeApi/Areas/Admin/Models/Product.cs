@@ -17,8 +17,5 @@ namespace TheExchangeApi.Models
 
         [BsonElement("price")]
         public double Price { get; set; } = 0.00;
-
-        [BsonElement("category")]
-        public string Category { get; set; } = string.Empty ;
     }
 }
