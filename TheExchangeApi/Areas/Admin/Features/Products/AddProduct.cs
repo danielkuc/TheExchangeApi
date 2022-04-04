@@ -28,7 +28,13 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
                 var db = client.GetDatabase("productDatabase");
                 var products = db.GetCollection<Product>("products");
 
-                var product = new Product() { Name = command.Name, Description = command.Description, Price = command.Price};
+                var product = new Product() 
+                              { 
+                                Name = command.Name,
+                                Description = command.Description,
+                                Price = command.Price,
+                              };
+
                 products.InsertOne(product);
                 return Task.FromResult(product);
             }

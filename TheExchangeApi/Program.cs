@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TheExchangeApi.Areas.Admin.Models;
-using TheExchangeApi.Areas.Admin.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
+// Add MediatR
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
 // CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
