@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using TheExchangeApi.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,9 +10,19 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        private readonly ISender _mediator;
+
+        public ProductsController(ISender mediator)
+        {
+            _mediator = mediator;
+        }
         // GET: api/<ProductsController>
         [HttpGet]
-        public ActionResult<List<Product>> Get() => throw new NotImplementedException();
+        public async Task<IActionResult> GetAll()
+        {
+            var products = await _mediator.Send(new GetAllProducts.GetAllProductsQuery());
+            return Ok(products);
+        }
 
         // GET api/<ProductsController>/5
         [HttpGet("{id}")]
@@ -22,8 +33,10 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
 
         // POST api/<ProductsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> CreateNewProduct(Product newProduct)
         {
+            var product = await _mediator.Send(new AddProduct.AddProductCommand(newProduct.Name, newProduct.Description, newProduct.Price));
+            return Ok(product);
         }
 
         // PUT api/<ProductsController>/5

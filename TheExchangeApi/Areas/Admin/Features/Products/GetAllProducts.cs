@@ -6,26 +6,16 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
 {
     public class GetAllProducts
     {
-        //input
-        public class Query : IRequest<RetreivedProducts>
-        {
-        }
+        public record GetAllProductsQuery : IRequest<IMongoCollection<Product>>;
 
-        //output
-        public class RetreivedProducts
+        public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IMongoCollection<Product>>
         {
-            public MongoCollectionBase<Product> ProductList;
-        }
-
-        //handler
-        public class Handler : IRequestHandler<Query, RetreivedProducts>
-        {
-            public Task<RetreivedProducts> Handle(Query request, CancellationToken cancellationToken)
+            public Task<IMongoCollection<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
             {
-                var mongoClient = new MongoClient("mongodb+srv://admin:Testowanie1@theexchangedb.mqzo6.mongodb.net/productDatabase?retryWrites=true&w=majority");
-                var database = mongoClient.GetDatabase("productDatabase");
-                var products = database.GetCollection<Product>("products");
-                return (Task<RetreivedProducts>)products;
+                var client = new MongoClient("mongodb+srv://admin:Testowanie1@theexchangedb.mqzo6.mongodb.net/productDatabase?retryWrites=true&w=majority");
+                var db = client.GetDatabase("productDatabase");
+                var products = db.GetCollection<Product>("products");
+                return Task.FromResult(products);
             }
         }
     }
