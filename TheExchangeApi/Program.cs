@@ -10,6 +10,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add MediatR
 builder.Services.AddMediatR(typeof(Program).Assembly);
 
+// get section "ProductDatabase" from appsettings.json
+builder.Services.Configure<ProductDatabaseSettings>(
+    builder.Configuration.GetSection("ProductDatabase"));
+
+//dependency injection: whenever IProductDatabaseSettings is required, provide instance of ProductDatabaseSettings class 
+builder.Services.AddSingleton<IProductDatabaseSettings>(serviceProvider =>
+    serviceProvider.GetRequiredService<IOptions<ProductDatabaseSettings>>().Value);
+
+//provide IMongoClient with ConnectionString from appsettings.json
+builder.Services.AddSingleton<IMongoClient>(singleton =>
+    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString")));
+
+
 // CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
 builder.Services.AddCors(options =>
 {
