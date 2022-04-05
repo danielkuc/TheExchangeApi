@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TheExchangeApi.Models;
 using MongoDB.Driver;
+using TheExchangeApi.Areas.Admin.Models;
 
 namespace TheExchangeApi.Areas.Admin.Features.Products
 {
@@ -22,11 +23,18 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
 
         public class AddProductHandler : IRequestHandler<AddProductCommand, Product>
         {
+            private readonly IProductDatabaseSettings _settings;
+            private readonly IMongoClient _client;
+
+            public AddProductHandler(IProductDatabaseSettings settings, IMongoClient client)
+            {
+                _settings = settings;
+                _client = client;
+            }
             public Task<Product> Handle(AddProductCommand command, CancellationToken cancellationToken)
             {
-                var client = new MongoClient("mongodb+srv://admin:Testowanie1@theexchangedb.mqzo6.mongodb.net/productDatabase?retryWrites=true&w=majority");
-                var db = client.GetDatabase("productDatabase");
-                var products = db.GetCollection<Product>("products");
+                var db = _client.GetDatabase(_settings.DatabaseName);
+                var products = db.GetCollection<Product>(_settings.ProductsCollectionName);
 
                 var product = new Product() 
                               { 
