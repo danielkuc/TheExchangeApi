@@ -26,9 +26,10 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
 
         // GET api/<ProductsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetProductById(string id)
         {
-            return "value";
+            var product = await _mediator.Send(new GetProductById.GetProductByIdQuery(id));
+            return Ok(product);
         }
 
         // POST api/<ProductsController>
