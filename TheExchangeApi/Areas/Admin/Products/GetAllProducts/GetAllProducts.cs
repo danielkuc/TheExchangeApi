@@ -2,7 +2,6 @@
 using TheExchangeApi.Models;
 using MongoDB.Driver;
 using MongoDB.Bson;
-using TheExchangeApi.Areas.Admin.Models;
 
 namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
 {

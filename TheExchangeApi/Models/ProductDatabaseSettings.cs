@@ -1,4 +1,4 @@
-﻿namespace TheExchangeApi.Areas.Admin.Models
+﻿namespace TheExchangeApi.Models
 {
     public class ProductDatabaseSettings : IProductDatabaseSettings
     {

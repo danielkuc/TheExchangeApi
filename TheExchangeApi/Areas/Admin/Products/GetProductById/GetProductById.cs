@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using MediatR;
 using TheExchangeApi.Models;
-using TheExchangeApi.Areas.Admin.Models;
 
 namespace TheExchangeApi.Areas.Admin.Products.GetProductById
 {
@@ -23,11 +22,11 @@ namespace TheExchangeApi.Areas.Admin.Products.GetProductById
 
             public Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
             {
-                var db = _client.GetDatabase(_settings.DatabaseName);
+                var database = _client.GetDatabase(_settings.DatabaseName);
 
-                var products = db.GetCollection<Product>(_settings.ProductsCollectionName).Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
+                var collection = database.GetCollection<Product>(_settings.ProductsCollectionName).Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
 
-                var product = products.FirstOrDefault(dbProduct => dbProduct.Id == request.Id);
+                var product = collection.FirstOrDefault(dbProduct => dbProduct.Id == request.Id);
 
                 return Task.FromResult(product);
 
