@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using TheExchangeApi.Areas.Admin.Models;
+using TheExchangeApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
