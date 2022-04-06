@@ -12,12 +12,16 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
             public string Name { get; }
             public string Description { get; }
             public double Price { get; }
+            public bool IsAvailable { get; }
+            public int Quantity { get; }
 
-            public AddProductCommand(string name, string description, double price)
+            public AddProductCommand(string name, string description, double price, bool isAvailable, int quantity)
             {
                 Name = name;
                 Description = description;
                 Price = price;
+                IsAvailable = isAvailable;
+                Quantity = quantity;
             }
         }
 
@@ -41,6 +45,8 @@ namespace TheExchangeApi.Areas.Admin.Features.Products
                                 Name = command.Name,
                                 Description = command.Description,
                                 Price = command.Price,
+                                IsAvailable = command.IsAvailable,
+                                Quantity = command.Quantity
                               };
 
                 products.InsertOne(product);
