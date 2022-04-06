@@ -4,7 +4,7 @@ using MediatR;
 using TheExchangeApi.Models;
 using TheExchangeApi.Areas.Admin.Models;
 
-namespace TheExchangeApi.Areas.Admin.Features.Products
+namespace TheExchangeApi.Areas.Admin.Products.GetProductById
 {
     public class GetProductById
     {

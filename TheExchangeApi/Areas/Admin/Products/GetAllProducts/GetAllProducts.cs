@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using TheExchangeApi.Areas.Admin.Models;
 
-namespace TheExchangeApi.Areas.Admin.Features.Products
+namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
 {
     public class GetAllProducts
     {

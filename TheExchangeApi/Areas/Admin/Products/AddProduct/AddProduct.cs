@@ -3,7 +3,7 @@ using TheExchangeApi.Models;
 using MongoDB.Driver;
 using TheExchangeApi.Areas.Admin.Models;
 
-namespace TheExchangeApi.Areas.Admin.Features.Products
+namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
     public class AddProduct
     {
