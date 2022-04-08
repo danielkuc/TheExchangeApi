@@ -22,12 +22,12 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
             public Task<UpdateResult> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
             {
                 var database = _client.GetDatabase(_settings.DatabaseName);
-                var filter = Builders<BsonDocument>.Filter.Eq("Id", request.Id);
-                var update = Builders<BsonDocument>.Update.Set("IsAvailable", false);
-                var updated = database.GetCollection<BsonDocument>(_settings.ProductsCollectionName)
-                    .UpdateOne(filter, update);
+                var filter = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
+                var update = Builders<Product>.Update.Set(p => p.IsAvailable, false);
+                var updated = database.GetCollection<Product>(_settings.ProductsCollectionName)
+                    .UpdateOneAsync(filter, update);
 
-                return Task.FromResult(updated);
+                return updated;
             }
         }
     }

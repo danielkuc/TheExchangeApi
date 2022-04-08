@@ -23,12 +23,11 @@ namespace TheExchangeApi.Areas.Admin.Products.GetProductById
             public Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
             {
                 var database = _client.GetDatabase(_settings.DatabaseName);
+                var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
+                var firstFoundProduct = database.GetCollection<Product>(_settings.ProductsCollectionName)
+                    .Find(filterById).FirstOrDefault(cancellationToken: cancellationToken);
 
-                var collection = database.GetCollection<Product>(_settings.ProductsCollectionName).Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
-
-                var product = collection.FirstOrDefault(dbProduct => dbProduct.Id == request.Id);
-
-                return Task.FromResult(product);
+                return Task.FromResult(firstFoundProduct);
 
             }
         }
