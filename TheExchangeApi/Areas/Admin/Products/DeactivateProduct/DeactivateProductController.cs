@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using TheExchangeApi.Models;
+
 
 namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {

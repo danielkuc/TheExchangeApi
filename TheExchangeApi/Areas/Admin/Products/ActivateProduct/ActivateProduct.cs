@@ -24,10 +24,10 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
                 var activateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, true);
-                var updateProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
+                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
                     .UpdateOneAsync(filterById, activateProduct);
 
-                return updateProduct;
+                return updatedProduct;
             }
         }
     }

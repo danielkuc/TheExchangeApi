@@ -20,13 +20,13 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
             }
             public Task<UpdateResult> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
             {
-                var database = _client.GetDatabase(_settings.DatabaseName);
-                var filter = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
-                var update = Builders<Product>.Update.Set(p => p.IsAvailable, false);
-                var updated = database.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .UpdateOneAsync(filter, update);
+                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
+                var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
+                var deactivateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, false);
+                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
+                    .UpdateOneAsync(filterById, deactivateProduct);
 
-                return updated;
+                return updatedProduct;
             }
         }
     }
