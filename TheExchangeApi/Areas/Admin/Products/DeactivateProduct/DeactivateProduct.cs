@@ -7,9 +7,9 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
     public class DeactivateProduct
     {
-        public record DeactivateProductCommand(string Id, bool IsActive) : IRequest<Product>;
+        public record DeactivateProductCommand(string Id) : IRequest<MongoDB.Driver.UpdateResult>;
 
-        public class DeactivateProductHandler : IRequestHandler<DeactivateProductCommand, Product>
+        public class DeactivateProductHandler : IRequestHandler<DeactivateProductCommand, MongoDB.Driver.UpdateResult>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
@@ -19,17 +19,15 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
                 _settings = settings;
                 _client = client;
             }
-            public Task<Product> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
+            public Task<MongoDB.Driver.UpdateResult> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
             {
                 var database = _client.GetDatabase(_settings.DatabaseName);
-                var collection = database.GetCollection<Product>(_settings.ProductsCollectionName).Find(new BsonDocument()).ToList();
-                var originalProduct = collection.FirstOrDefault(dbProduct => dbProduct.Id == request.Id);
+                var filter = Builders<BsonDocument>.Filter.Eq("Id", request.Id);
+                var update = Builders<BsonDocument>.Update.Set("IsAvailable", false);
+                var updated = database.GetCollection<BsonDocument>(_settings.ProductsCollectionName)
+                    .UpdateOne(filter, update);
 
-                if (originalProduct != null && originalProduct.IsAvailable == false)
-                {
-                    return Task.FromResult(originalProduct);
-                }
-                return Task.FromResult(originalProduct);
+                return Task.FromResult(updated);
             }
         }
     }

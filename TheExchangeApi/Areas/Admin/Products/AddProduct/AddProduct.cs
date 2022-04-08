@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
     public class AddProduct
     {
-        public class AddProductCommand : IRequest<Product>
+        public class AddProductCommand : IRequest<Models.UpdateResult>
         {
             public string Name { get; }
             public string Description { get; }
@@ -24,7 +24,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             }
         }
 
-        public class AddProductHandler : IRequestHandler<AddProductCommand, Product>
+        public class AddProductHandler : IRequestHandler<AddProductCommand, Models.UpdateResult>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
@@ -34,12 +34,12 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 _settings = settings;
                 _client = client;
             }
-            public Task<Product> Handle(AddProductCommand command, CancellationToken cancellationToken)
+            public Task<Models.UpdateResult> Handle(AddProductCommand command, CancellationToken cancellationToken)
             {
                 var db = _client.GetDatabase(_settings.DatabaseName);
-                var products = db.GetCollection<Product>(_settings.ProductsCollectionName);
+                var products = db.GetCollection<Models.UpdateResult>(_settings.ProductsCollectionName);
 
-                var product = new Product() 
+                var product = new Models.UpdateResult() 
                               { 
                                 Name = command.Name,
                                 Description = command.Description,

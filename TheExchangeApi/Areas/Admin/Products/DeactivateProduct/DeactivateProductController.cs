@@ -18,9 +18,9 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
         }
 
         [HttpPut]
-        public async Task<IActionResult> DeactivateProduct(string Id, bool IsActive)
+        public async Task<IActionResult> DeactivateProduct(string Id)
         {
-            var deactivatedProduct = _mediator.Send(new DeactivateProduct.DeactivateProductCommand(Id, IsActive));
+            var deactivatedProduct = await _mediator.Send(new DeactivateProduct.DeactivateProductCommand(Id));
             return Ok(deactivatedProduct);
         }
     }
