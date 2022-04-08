@@ -22,13 +22,14 @@ namespace TheExchangeApi.Areas.Admin.Products.GetProductById
 
             public Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
             {
-                var database = _client.GetDatabase(_settings.DatabaseName);
+                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
+
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
-                var firstFoundProduct = database.GetCollection<Product>(_settings.ProductsCollectionName)
+
+                var firstFoundProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
                     .Find(filterById).FirstOrDefault(cancellationToken: cancellationToken);
 
                 return Task.FromResult(firstFoundProduct);
-
             }
         }
 
