@@ -28,7 +28,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 newProduct.Quantity
                 ));
 
-            return CreatedAtAction("Product created", createdProduct);
+            return Created("admin/product.add", createdProduct);
         }
     }
 }
