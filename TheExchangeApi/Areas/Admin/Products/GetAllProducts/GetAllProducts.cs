@@ -24,7 +24,8 @@ namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
             {
                 var db = _client.GetDatabase(_settings.DatabaseName);
 
-                var products = db.GetCollection<Product>(_settings.ProductsCollectionName).Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
+                var products = db.GetCollection<Product>(_settings.ProductsCollectionName)
+                    .Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
 
                 return Task.FromResult(products);
             }

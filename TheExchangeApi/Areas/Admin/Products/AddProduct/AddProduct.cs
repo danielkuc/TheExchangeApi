@@ -36,10 +36,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             }
             public Task<Product> Handle(AddProductCommand command, CancellationToken cancellationToken)
             {
-                var db = _client.GetDatabase(_settings.DatabaseName);
-                var products = db.GetCollection<Product>(_settings.ProductsCollectionName);
-
-                var product = new Product() 
+                var newProduct = new Product() 
                               { 
                                 Name = command.Name,
                                 Description = command.Description,
@@ -48,8 +45,12 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                                 Quantity = command.Quantity
                               };
 
-                products.InsertOne(product);
-                return Task.FromResult(product);
+                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
+
+                productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
+                    .InsertOne(newProduct, cancellationToken: cancellationToken);
+
+                return Task.FromResult(newProduct);
             }
         }
     }

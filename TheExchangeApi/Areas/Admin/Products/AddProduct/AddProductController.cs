@@ -20,7 +20,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
         [HttpPost]
         public async Task<IActionResult> CreateNewProduct(Product newProduct)
         {
-            var product = await _mediator.Send(new AddProduct.AddProductCommand(
+            var createdProduct = await _mediator.Send(new AddProduct.AddProductCommand(
                 newProduct.Name,
                 newProduct.Description,
                 newProduct.Price,
@@ -28,7 +28,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 newProduct.Quantity
                 ));
 
-            return Ok(product);
+            return CreatedAtAction("Product created", createdProduct);
         }
     }
 }
