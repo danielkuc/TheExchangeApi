@@ -7,9 +7,9 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
     public class DeactivateProduct
     {
-        public record DeactivateProductCommand(string Id) : IRequest<MongoDB.Driver.UpdateResult>;
+        public record DeactivateProductCommand(string Id) : IRequest<UpdateResult>;
 
-        public class DeactivateProductHandler : IRequestHandler<DeactivateProductCommand, MongoDB.Driver.UpdateResult>
+        public class DeactivateProductHandler : IRequestHandler<DeactivateProductCommand, UpdateResult>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
@@ -19,7 +19,7 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
                 _settings = settings;
                 _client = client;
             }
-            public Task<MongoDB.Driver.UpdateResult> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
+            public Task<UpdateResult> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
             {
                 var database = _client.GetDatabase(_settings.DatabaseName);
                 var filter = Builders<BsonDocument>.Filter.Eq("Id", request.Id);
