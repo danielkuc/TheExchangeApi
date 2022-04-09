@@ -25,7 +25,8 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 newProduct.Description,
                 newProduct.Price,
                 newProduct.IsAvailable,
-                newProduct.Quantity
+                newProduct.Quantity,
+                newProduct.AddedBy
                 ));
 
             return Created("admin/product.add", createdProduct);

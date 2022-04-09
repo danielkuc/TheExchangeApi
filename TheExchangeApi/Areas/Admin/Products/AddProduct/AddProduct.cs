@@ -13,14 +13,16 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             public double Price { get; }
             public bool IsAvailable { get; }
             public int Quantity { get; }
+            public string AddedBy { get; }
 
-            public AddProductCommand(string name, string description, double price, bool isAvailable, int quantity)
+            public AddProductCommand(string name, string description, double price, bool available, int quantity, string addedBy)
             {
                 Name = name;
                 Description = description;
                 Price = price;
-                IsAvailable = isAvailable;
+                IsAvailable = available;
                 Quantity = quantity;
+                AddedBy = addedBy;
             }
         }
 
@@ -42,7 +44,8 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                                 Description = command.Description,
                                 Price = command.Price,
                                 IsAvailable = command.IsAvailable,
-                                Quantity = command.Quantity
+                                Quantity = command.Quantity,
+                                AddedBy = command.AddedBy
                               };
 
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
