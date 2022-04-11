@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
 {
-    [Route("admin/products.all")]
     [ApiController]
+    //[Authorize]
+    [Route("admin/products.all")]
     [EnableCors("myFrontendPolicy")]
     public class GetAllProductsController : ControllerBase
     {

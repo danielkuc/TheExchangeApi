@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TheExchangeApi.Models;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -27,9 +28,13 @@ builder.Services.AddSingleton<IMongoClient>(singleton =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("myFrontendPolicy",
-        builder =>
+        policy =>
         {
-            builder.WithOrigins("https://exchange-shop.netlify.app", "http://localhost:3000");
+            policy.WithOrigins(
+                "https://exchange-shop.netlify.app",
+                "http://localhost:3000")
+            .AllowAnyHeader();
+            //.AllowAnyMethod();
         }   
     );
 });
@@ -44,7 +49,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
      {
          c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-         c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+         c.TokenValidationParameters = new TokenValidationParameters
          {
              ValidAudience = builder.Configuration["Auth0:Audience"],
              ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
@@ -52,12 +57,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      });
 
 //authorisation, makes sure JWT has the required scope
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("product:read-write", policy => policy.
-        RequireAuthenticatedUser().
-        RequireClaim("scope", "product:read-write"));
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("product:read-write", policy => policy.
+//        RequireAuthenticatedUser().
+//        RequireClaim("scope", "product:read-write"));
+//});
 
 var app = builder.Build();
 
