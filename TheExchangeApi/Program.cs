@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -45,16 +46,27 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //JWT validation, middleware intercepts and validates received requests
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
-     {
-         c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-         c.TokenValidationParameters = new TokenValidationParameters
-         {
-             ValidAudience = builder.Configuration["Auth0:Audience"],
-             ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
-         };
-     });
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
+//     {
+//         c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+//         c.TokenValidationParameters = new TokenValidationParameters
+//         {
+//             ValidAudience = builder.Configuration["Auth0:Audience"],
+//             ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
+//         };
+//     });
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = "https://the-exchange.eu.auth0.com";
+    options.Audience = "https://exchange/api";
+});
 
 //authorisation, makes sure JWT has the required scope
 //builder.Services.AddAuthorization(options =>
@@ -79,7 +91,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
