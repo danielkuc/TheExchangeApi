@@ -35,7 +35,6 @@ builder.Services.AddCors(options =>
                 "https://exchange-shop.netlify.app",
                 "http://localhost:3000")
             .AllowAnyHeader();
-            //.AllowAnyMethod();
         }   
     );
 });
@@ -46,18 +45,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //JWT validation, middleware intercepts and validates received requests
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
-//     {
-//         c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-//         c.TokenValidationParameters = new TokenValidationParameters
-//         {
-//             ValidAudience = builder.Configuration["Auth0:Audience"],
-//             ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
-//         };
-//     });
-
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,6 +53,10 @@ builder.Services.AddAuthentication(options =>
 {
     options.Authority = "https://the-exchange.eu.auth0.com";
     options.Audience = "https://exchange/api";
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
 });
 
 //authorisation, makes sure JWT has the required scope
@@ -91,7 +82,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 

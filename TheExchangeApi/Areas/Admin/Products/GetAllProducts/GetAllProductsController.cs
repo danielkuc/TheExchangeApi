@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
 {
     [ApiController]
-    //[Authorize]
     [Route("admin/products.all")]
     [EnableCors("myFrontendPolicy")]
     public class GetAllProductsController : ControllerBase
@@ -19,6 +18,7 @@ namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var products = await _mediator.Send(new GetAllProducts.GetAllProductsQuery());
