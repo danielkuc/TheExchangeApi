@@ -59,14 +59,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-//authorisation, makes sure JWT has the required scope
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy("product:read-write", policy => policy.
-//        RequireAuthenticatedUser().
-//        RequireClaim("scope", "product:read-write"));
-//});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
