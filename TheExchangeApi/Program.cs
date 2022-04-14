@@ -59,6 +59,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("GetProducts", policy =>
+        policy.RequireAssertion(context =>
+        {
+            if (!context.User.HasClaim(c => c.Type == "scope"))
+                return false;
+            var scopes = context.User.FindFirst(c => c.Type == "scope").Value.Split(' ').Any(s => s == "read:product");
+                return true;
+        }));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
