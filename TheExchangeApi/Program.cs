@@ -33,7 +33,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins(
                 "https://exchange-shop.netlify.app",
-                "http://localhost:3000")
+                "http://localhost:3000",
+                "https://exchange-dashboard.netlify.app/")
             .AllowAnyHeader();
         }   
     );
