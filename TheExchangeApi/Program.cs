@@ -65,10 +65,20 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("GetProducts", policy =>
         policy.RequireAssertion(context =>
         {
-            if (!context.User.HasClaim(c => c.Type == "scope"))
+            //if (context.User.HasClaim(c => c.Type == "scope"))
+            //    return true;
+            //var scopes = context.User.FindFirst(c => c.Type == "scope").Value.Split(' ').Any(s => s == "read:product");
+            //    return true;
+
+            if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == "https://the-exchange.eu.auth0.com"))
                 return false;
-            var scopes = context.User.FindFirst(c => c.Type == "scope").Value.Split(' ').Any(s => s == "read:product");
-                return true;
+
+            // Split the scopes string into an array
+            var scopes = context.User.FindFirst(c => c.Type == "scope" && c.Issuer == "https://the-exchange.eu.auth0.com").Value.Split(' ');
+
+            // Succeed if the scope array contains the required scope
+            if (scopes.Any(s => s == "https://the-exchange.eu.auth0.com"))
+            return true;
         }));
 });
 
