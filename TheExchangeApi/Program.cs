@@ -5,8 +5,6 @@ using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using TheExchangeApi.Policies;
-using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
