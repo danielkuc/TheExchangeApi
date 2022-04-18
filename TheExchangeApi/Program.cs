@@ -62,11 +62,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(options =>
-  options.AddPolicy("product:read-write", policy =>
-      policy.Requirements.Add( new HasScopeRequirement("product:read-write"))));
-
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+builder.Services.AddAuthorization(options => options.AddPolicy("read:products", policy => policy.RequireClaim("permissions", "read:products")));
 
 var app = builder.Build();
 

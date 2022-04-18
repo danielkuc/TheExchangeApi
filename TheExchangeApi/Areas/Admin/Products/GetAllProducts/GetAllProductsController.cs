@@ -18,7 +18,7 @@ namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
         }
 
         [HttpGet]
-        [Authorize("product:read-write")]
+        [Authorize(Policy = "read:products")]
         public async Task<IActionResult> GetAll()
         {
             var products = await _mediator.Send(new GetAllProducts.GetAllProductsQuery());
