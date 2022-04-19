@@ -60,7 +60,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(options => options.AddPolicy("read:products", policy => policy.RequireClaim("permissions", "read:products")));
+builder.Services.AddAuthorization(options => { 
+    options.AddPolicy("ReadAccess", policy => policy.RequireClaim("permissions", "read:products"));
+    options.AddPolicy("WriteAccess", policy => policy.RequireClaim("permissions", "write:products"));
+});
+
 
 var app = builder.Build();
 
