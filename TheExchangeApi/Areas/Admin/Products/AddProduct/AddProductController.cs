@@ -1,12 +1,13 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TheExchangeApi.Models;
 
 namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
-    [Route("admin/product.add")]
     [ApiController]
+    [Route("admin/product.add")]
     [EnableCors("myFrontendPolicy")]
     public class AddProductController : ControllerBase
     {
@@ -18,6 +19,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
         }
 
         [HttpPost]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<IActionResult> CreateNewProduct(Product newProduct)
         {
             var createdProduct = await _mediator.Send(new AddProduct.AddProductCommand(
