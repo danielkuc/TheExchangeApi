@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using MongoDB.Bson;
 using MediatR;
 using TheExchangeApi.Models;
 

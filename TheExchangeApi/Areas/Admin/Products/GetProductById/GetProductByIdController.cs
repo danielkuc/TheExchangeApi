@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheExchangeApi.Areas.Admin.Products.GetProductById
 {
-    [Route("admin/product.get/{id}")]
+    [Route("admin/product.get.byId")]
     [ApiController]
     [EnableCors("myFrontendPolicy")]
     public class GetProductByIdController : ControllerBase
