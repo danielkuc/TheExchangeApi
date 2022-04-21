@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Admin.Products.GetAllMyProducts
 {
     public class GetAllMyProducts
     {
-        public record GetAllMyProductsQuery : IRequest<List<Product>>;
+        public record GetAllMyProductsQuery(string UserEmail) : IRequest<List<Product>>;
 
         public class GetAllMyProductsHandler : IRequestHandler<GetAllMyProductsQuery, List<Product>>
         {
@@ -21,11 +21,11 @@ namespace TheExchangeApi.Areas.Admin.Products.GetAllMyProducts
             }
             public Task<List<Product>> Handle(GetAllMyProductsQuery request, CancellationToken cancellationToken)
             {
-                var db = _client.GetDatabase(_settings.DatabaseName);
-                //var filterByUserName = Builders<Product>.Filter.Eq(product => product.AddedBy, request);
+                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
+                var filterByUserName = Builders<Product>.Filter.Eq(product => product.AddedBy, request.UserEmail);
 
-                var products = db.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
+                var products = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
+                    .Find(filterByUserName).ToList(cancellationToken: cancellationToken);
 
                 return Task.FromResult(products);
             }
