@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
     [Route("admin/product.deactivate/{id}")]
     [ApiController]
-    [EnableCors("myFrontendPolicy")]
+    [EnableCors("theExchangeShopPolicy")]
     public class DeactivateProductController : ControllerBase
     {
         private readonly ISender _mediator;

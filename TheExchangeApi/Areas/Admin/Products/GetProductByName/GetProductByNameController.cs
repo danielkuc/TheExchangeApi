@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Admin.Products.GetProductByName
 {
     [Route("admin/product.get.byName")]
     [ApiController]
-    [EnableCors("myFrontendPolicy")]
+    [EnableCors("theExchangeShopPolicy")]
     public class GetProductByNameController : ControllerBase
     {
         private readonly ISender _mediator;

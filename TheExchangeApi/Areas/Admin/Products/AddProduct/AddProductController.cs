@@ -8,7 +8,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
     [ApiController]
     [Route("admin/product.add")]
-    [EnableCors("myFrontendPolicy")]
+    [EnableCors("theExchangeShopPolicy")]
     public class AddProductController : ControllerBase
     {
         private readonly ISender _mediator;

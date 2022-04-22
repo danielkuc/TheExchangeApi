@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
     [Route("admin/product.activate/{id}")]
     [ApiController]
-    [EnableCors("myFrontendPolicy")]
+    [EnableCors("theExchangeShopPolicy")]
     public class ActivateProductController : ControllerBase
     {
         private readonly ISender _mediator;

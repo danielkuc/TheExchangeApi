@@ -28,7 +28,7 @@ builder.Services.AddSingleton<IMongoClient>(singleton =>
 // CORS configuration, defined a CORS policy to use with attributes for each controlle/method.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("myFrontendPolicy",
+    options.AddPolicy("theExchangeShopPolicy",
         policy =>
         {
             policy.WithOrigins(

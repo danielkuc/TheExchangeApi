@@ -3,24 +3,24 @@ using MongoDB.Driver;
 using MongoDB.Bson;
 using TheExchangeApi.Models;
 
-namespace TheExchangeApi.Areas.Admin.Products.GetAllProducts
+namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
-    public class GetAllProducts
+    public class FindManyProducts
     {
-        public record GetAllProductsQuery : IRequest<List<Product>>;
+        public record FindManyProductsQuery : IRequest<List<Product>>;
 
-        public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, List<Product>>
+        public class FindManyProductsHandler : IRequestHandler<FindManyProductsQuery, List<Product>>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
 
-            public GetAllProductsQueryHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public FindManyProductsHandler(IProductDatabaseSettings settings, IMongoClient client)
             {
                 _settings = settings;
                 _client = client;
             }
 
-            public Task<List<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+            public Task<List<Product>> Handle(FindManyProductsQuery request, CancellationToken cancellationToken)
             {
                 var db = _client.GetDatabase(_settings.DatabaseName);
 

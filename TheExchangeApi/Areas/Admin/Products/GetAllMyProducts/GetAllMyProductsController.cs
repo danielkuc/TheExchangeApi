@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Admin.Products.GetAllMyProducts
 {
     [ApiController]
     [Route("api/[controller]")]
-    [EnableCors("myFrontendPolicy")]
+    [EnableCors("theExchangeShopPolicy")]
     public class GetAllMyProductsController : ControllerBase
     {
         private readonly ISender _mediator;
