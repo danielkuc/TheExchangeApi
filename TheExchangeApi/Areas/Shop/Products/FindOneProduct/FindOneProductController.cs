@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheExchangeApi.Areas.Shop.Products.FindOneProduct
 {
-    [Route("admin/product.findOneProduct")]
+    [Route("shop/product.findOneProduct")]
     [ApiController]
     [EnableCors("theExchangeShopPolicy")]
     public class FindOneProductController : ControllerBase

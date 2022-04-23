@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Cors;
 namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
 {
     [ApiController]
-    [Route("admin/product.findManyProducts")]
+    [Route("shop/product.findManyProducts")]
     [EnableCors("theExchangeShopPolicy")]
     public class FindManyProductsController : ControllerBase
     {
