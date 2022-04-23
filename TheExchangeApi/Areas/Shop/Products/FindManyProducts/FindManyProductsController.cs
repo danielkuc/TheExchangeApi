@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Authorization;
 
-namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
+namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
 {
     [ApiController]
     [Route("admin/product.findManyProducts")]

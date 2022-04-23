@@ -2,24 +2,24 @@
 using MediatR;
 using TheExchangeApi.Models;
 
-namespace TheExchangeApi.Areas.Shop.Products.GetProductById
+namespace TheExchangeApi.Areas.Shop.Products.FindOneProduct
 {
-    public class GetProductById
+    public class FindOneProduct
     {
-        public record GetProductByIdQuery(string Id) : IRequest<Product>;
+        public record FindOneProductQuery(string Id) : IRequest<Product>;
 
-        public class GetProductByIdHandler : IRequestHandler<GetProductByIdQuery, Product>
+        public class FindOneProductHandler : IRequestHandler<FindOneProductQuery, Product>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
 
-            public GetProductByIdHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public FindOneProductHandler(IProductDatabaseSettings settings, IMongoClient client)
             {
                 _settings = settings;
                 _client = client;
             }
 
-            public Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+            public Task<Product> Handle(FindOneProductQuery request, CancellationToken cancellationToken)
             {
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
 
