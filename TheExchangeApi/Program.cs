@@ -75,7 +75,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+//app.UseExceptionHandler();
 //calling CORS service initialiser
 app.UseCors();
 app.UseHttpsRedirection();
