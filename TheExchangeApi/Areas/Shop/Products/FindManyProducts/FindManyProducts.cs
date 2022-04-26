@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
 {
     public class FindManyProducts
     {
-        public record FindManyProductsQuery(string name) : IRequest<List<Product>>;
+        public record FindManyProductsQuery(string Name) : IRequest<List<Product>>;
 
         public class FindManyProductsHandler : IRequestHandler<FindManyProductsQuery, List<Product>>
         {
@@ -23,7 +23,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
             public Task<List<Product>> Handle(FindManyProductsQuery request, CancellationToken cancellationToken)
             {
                 var productCollection = _client.GetDatabase(_settings.DatabaseName).GetCollection<Product>(_settings.ProductsCollectionName);
-                var filters = Builders<Product>.Filter.Eq("name", request.name);
+                var filters = Builders<Product>.Filter.Eq("name", request.Name);
                 var products = productCollection.Find(filters).ToList(cancellationToken: cancellationToken);
 
                 return Task.FromResult(products);
