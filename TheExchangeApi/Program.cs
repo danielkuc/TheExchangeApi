@@ -5,6 +5,8 @@ using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -75,7 +77,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandler("/error");
+app.UseExceptionHandler(options =>
+{
+    options.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        var exception = context.Features.Get<IExceptionHandlerFeature>();
+        if (exception != null)
+        {
+            await context.Response.WriteAsync(exception.Error.Message);
+        }
+    });
+});
+
+
 //calling CORS service initialiser
 app.UseCors();
 app.UseHttpsRedirection();
