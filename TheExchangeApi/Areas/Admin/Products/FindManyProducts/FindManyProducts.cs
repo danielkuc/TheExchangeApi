@@ -22,10 +22,9 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 
             public Task<List<Product>> Handle(FindManyProductsQuery request, CancellationToken cancellationToken)
             {
-                var db = _client.GetDatabase(_settings.DatabaseName);
-
-                var products = db.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .Find(new BsonDocument()).ToList(cancellationToken: cancellationToken);
+                var productCollection = _client.GetDatabase(_settings.DatabaseName).GetCollection<Product>(_settings.ProductsCollectionName);
+                var filters = Builders<Product>.Filter.Eq("name", request.Name);
+                var products = productCollection.Find(filters).ToList(cancellationToken: cancellationToken);
 
                 return Task.FromResult(products);
             }

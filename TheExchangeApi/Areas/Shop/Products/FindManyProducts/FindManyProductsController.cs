@@ -17,7 +17,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
         }
 
         [HttpGet]
-        public async Task<IActionResult> FindManyProducts(string name)
+        public async Task<IActionResult> FindManyProducts(string? name = null)
         {
             var products = await _mediator.Send(new FindManyProducts.FindManyProductsQuery(name));
             return Ok(products);
