@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
 using TheExchangeApi.Models;
+using System.Text.RegularExpressions;
 
 namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
@@ -22,9 +23,12 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 
             public Task<List<Product>> Handle(FindManyProductsQuery request, CancellationToken cancellationToken)
             {
-                var productCollection = _client.GetDatabase(_settings.DatabaseName).GetCollection<Product>(_settings.ProductsCollectionName);
-                //var filters = Builders<Product>.Filter.Eq("name", request.Name);
-                var products = productCollection.Find(product => product.Name.Contains(request.Name) && product.IsAvailable).ToList(cancellationToken: cancellationToken);
+                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
+                var productCollection = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName);
+                var filter = Builders<Product>.Filter.Regex("name", new BsonRegularExpression(new Regex("Test")));
+
+                var products = productCollection.Find(filter).ToList();
+
 
                 return Task.FromResult(products);
             }
