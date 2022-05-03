@@ -8,7 +8,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
     public class FindManyProducts
     {
-        public record FindManyProductsQuery(string Name) : IRequest<List<Product>>;
+        public record FindManyProductsQuery(string Name, string PriceFrom, string PriceTo) : IRequest<List<Product>>;
 
         public class FindManyProductsHandler : IRequestHandler<FindManyProductsQuery, List<Product>>
         {
