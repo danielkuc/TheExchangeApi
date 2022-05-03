@@ -25,12 +25,17 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
             {
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var productCollection = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName);
-               
-                var filter = Builders<Product>.Filter.Regex("name", new BsonRegularExpression(new Regex(request.Name, RegexOptions.IgnoreCase)));
-                var inStockFilter = Builders<Product>.Filter.Eq(x => x.IsAvailable, true);
-                var combineFilters = Builders<Product>.Filter.And(filter, inStockFilter);
-                
-                var products = productCollection.Find(combineFilters).ToList();
+                var builder = Builders<Product>.Filter;
+                var filter = builder.Empty;
+
+                if (!string.IsNullOrWhiteSpace(request.Name))
+                {
+                    var nameFilter = Builders<Product>.Filter.Regex("name", new BsonRegularExpression(new Regex(request.Name, RegexOptions.IgnoreCase)));
+                    filter &= nameFilter;
+                }
+
+                //var inStockFilter = Builders<Product>.Filter.Eq(x => x.IsAvailable, false);
+                var products = productCollection.Find(filter).ToList();
 
 
                 return Task.FromResult(products);
