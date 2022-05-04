@@ -18,8 +18,8 @@ namespace TheExchangeApi.Models
         [BsonElement("price")]
         public double Price { get; set; } = 0.00;
 
-        [BsonElement("available")]
-        public bool IsAvailable { get; set; } = true;
+        [BsonElement("isAvailable")]
+        public bool IsAvailable { get; set; }
 
         [BsonElement("quantity")]
         public int Quantity { get; set; } = 0;
