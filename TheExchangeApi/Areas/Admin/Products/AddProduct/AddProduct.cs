@@ -15,14 +15,14 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             public int Quantity { get; }
             public string AddedBy { get; }
 
-            public AddProductCommand(string name, string description, double price, bool available, int quantity, string addedBy)
+            public AddProductCommand(Product newProduct)
             {
-                Name = name;
-                Description = description;
-                Price = price;
-                IsAvailable = available;
-                Quantity = quantity;
-                AddedBy = addedBy;
+                Name = newProduct.Name;
+                Description = newProduct.Description;
+                Price = newProduct.Price;
+                IsAvailable = newProduct.IsAvailable;
+                Quantity = newProduct.Quantity;
+                AddedBy = newProduct.AddedBy;
             }
         }
 

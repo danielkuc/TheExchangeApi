@@ -22,14 +22,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
         [Authorize(Policy = "WriteAccess")]
         public async Task<IActionResult> CreateNewProduct(Product newProduct)
         {
-            var createdProduct = await _mediator.Send(new AddProduct.AddProductCommand(
-                newProduct.Name,
-                newProduct.Description,
-                newProduct.Price,
-                newProduct.IsAvailable,
-                newProduct.Quantity,
-                newProduct.AddedBy
-                ));
+            var createdProduct = await _mediator.Send(new AddProduct.AddProductCommand(newProduct));
 
             return Created("admin/product.add", createdProduct);
         }
