@@ -34,6 +34,14 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
                     filter &= nameFilter;
                 }
 
+                if (!string.IsNullOrWhiteSpace(request.PriceFrom) && !string.IsNullOrWhiteSpace(request.PriceTo))
+                {
+                    var convertedPriceFrom = Convert.ToDouble(request.PriceFrom);
+                    var convertedPriceTo = Convert.ToDouble(request.PriceTo);
+                    var priceFilter = Builders<Product>.Filter.Gt("price",convertedPriceFrom) & Builders<Product>.Filter.Lt("price", convertedPriceTo);
+                    filter &= priceFilter;
+                }
+
                 var products = productCollection.Find(filter).ToList();
 
                 return Task.FromResult(products);
