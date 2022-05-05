@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 {
     public class UpdateProductFields
     {
-        public record UpdateProductFieldsCommand (string Id) : IRequest<UpdateResult>;
+        public record UpdateProductFieldsCommand (Product ProductToUpdate) : IRequest<UpdateResult>;
 
         public class UpdateProductFieldsHandler : IRequestHandler<UpdateProductFieldsCommand, UpdateResult>
         {
@@ -21,7 +21,16 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 
             public Task<UpdateResult> Handle(UpdateProductFieldsCommand request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
+                var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.ProductToUpdate.Id);
+                var updateProduct = Builders<Product>.Update.Set(p => p.Quantity, request.ProductToUpdate.Quantity)
+                                                            .Set(p => p.Price, request.ProductToUpdate.Price)
+                                                            .Set(p => p.Name, request.ProductToUpdate.Name)
+                                                            .Set(p => p.Description, request.ProductToUpdate.Description);
+
+                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName).UpdateManyAsync(filterById, updateProduct1);
+                
+                return updatedProduct;
             }
         }
     }
