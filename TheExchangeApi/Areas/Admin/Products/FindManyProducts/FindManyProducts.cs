@@ -25,7 +25,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
             {
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var productCollection = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName);
-                var filter = Builders<Product>.Filter.Eq(product => product.IsAvailable, false);
+                var filter = Builders<Product>.Filter.Eq(product => product.IsAvailable, true);
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
                 {
