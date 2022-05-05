@@ -6,25 +6,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
     public class AddProduct
     {
-        public class AddProductCommand : IRequest<Product>
-        {
-            public string Name { get; }
-            public string Description { get; }
-            public double Price { get; }
-            public bool IsAvailable { get; }
-            public int Quantity { get; }
-            public string AddedBy { get; }
-
-            public AddProductCommand(Product newProduct)
-            {
-                Name = newProduct.Name;
-                Description = newProduct.Description;
-                Price = newProduct.Price;
-                IsAvailable = newProduct.IsAvailable;
-                Quantity = newProduct.Quantity;
-                AddedBy = newProduct.AddedBy;
-            }
-        }
+        public record AddProductCommand(Product PassedProduct) : IRequest<Product>;
 
         public class AddProductHandler : IRequestHandler<AddProductCommand, Product>
         {
@@ -40,12 +22,12 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             {
                 var newProduct = new Product() 
                               { 
-                                Name = command.Name,
-                                Description = command.Description,
-                                Price = command.Price,
-                                IsAvailable = command.IsAvailable,
-                                Quantity = command.Quantity,
-                                AddedBy = command.AddedBy
+                                Name = command.PassedProduct.Name,
+                                Description = command.PassedProduct.Description,
+                                Price = command.PassedProduct.Price,
+                                IsAvailable = command.PassedProduct.IsAvailable,
+                                Quantity = command.PassedProduct.Quantity,
+                                AddedBy = command.PassedProduct.AddedBy
                               };
 
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
