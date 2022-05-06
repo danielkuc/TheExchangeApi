@@ -28,7 +28,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                                                             .Set(p => p.Name, request.ProductToUpdate.Name)
                                                             .Set(p => p.Description, request.ProductToUpdate.Description);
 
-                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName).UpdateManyAsync(filterById, updateProduct);
+                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName).UpdateManyAsync(filterById, updateProduct, cancellationToken: cancellationToken);
                 
                 return updatedProduct;
             }

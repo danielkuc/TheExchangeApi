@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
-    [Route("admin/product.deactivate/{id}")]
+    [Route("admin/product.deactivate")]
     [ApiController]
     [EnableCors("theExchangeShopPolicy")]
     public class DeactivateProductController : ControllerBase

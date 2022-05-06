@@ -25,7 +25,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
                 var activateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, true);
                 var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .UpdateOneAsync(filterById, activateProduct);
+                    .UpdateOneAsync(filterById, activateProduct, cancellationToken: cancellationToken);
 
                 return updatedProduct;
             }

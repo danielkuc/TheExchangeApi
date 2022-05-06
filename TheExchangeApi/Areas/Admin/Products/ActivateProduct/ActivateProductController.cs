@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
-    [Route("admin/product.activate/{id}")]
+    [Route("admin/product.activate")]
     [ApiController]
     [EnableCors("theExchangeShopPolicy")]
     public class ActivateProductController : ControllerBase

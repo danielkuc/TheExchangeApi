@@ -42,7 +42,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
                     filter &= priceFilter;
                 }
 
-                var products = productCollection.Find(filter).ToList();
+                var products = productCollection.Find(filter).ToList(cancellationToken: cancellationToken);
 
                 return Task.FromResult(products);
             }
