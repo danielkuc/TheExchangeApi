@@ -7,12 +7,16 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Add MediatR
 builder.Services.AddMediatR(typeof(Program).Assembly);
+
+//register validators
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 // get section "ProductDatabase" from appsettings.json
 builder.Services.Configure<ProductDatabaseSettings>(
