@@ -19,7 +19,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
         }
 
         [HttpPost]
-        [Authorize(Policy = "WriteAccess")]
+        //[Authorize(Policy = "WriteAccess")]
         public async Task<IActionResult> CreateNewProduct(Product newProduct)
         {
             var createdProduct = await _mediator.Send(new AddProduct.AddProductCommand(newProduct));

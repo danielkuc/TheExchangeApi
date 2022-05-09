@@ -19,8 +19,11 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 //register validators
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
-//register pipeline behaviour
+//register validation pipeline behaviour
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+
+//register logging pipeline behaviour
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 
 // get section "ProductDatabase" from appsettings.json
 builder.Services.Configure<ProductDatabaseSettings>(
