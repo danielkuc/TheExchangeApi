@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using FluentValidation;
+using TheExchangeApi.PipelineBehaviours;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -17,6 +18,9 @@ builder.Services.AddMediatR(typeof(Program).Assembly);
 
 //register validators
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+//register pipeline behaviour
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
 // get section "ProductDatabase" from appsettings.json
 builder.Services.Configure<ProductDatabaseSettings>(
