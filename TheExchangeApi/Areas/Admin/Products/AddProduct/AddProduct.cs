@@ -33,7 +33,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
 
                 productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .InsertOne(newProduct, cancellationToken: cancellationToken);
+                    .InsertOneAsync(newProduct, cancellationToken: cancellationToken);
 
                 return Task.FromResult(newProduct);
             }

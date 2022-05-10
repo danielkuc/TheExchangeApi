@@ -24,7 +24,7 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
                 var deactivateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, false);
                 var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .UpdateOneAsync(filterById, deactivateProduct);
+                    .UpdateOneAsync(filterById, deactivateProduct, cancellationToken: cancellationToken);
 
                 return updatedProduct;
             }

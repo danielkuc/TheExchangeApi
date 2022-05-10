@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System.Reflection;
 
 namespace TheExchangeApi.PipelineBehaviours
 {

@@ -87,7 +87,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+//global exception handler
 app.UseExceptionHandler(options =>
 {
     options.Run(async context =>
