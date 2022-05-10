@@ -17,4 +17,14 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Shop\Cart\AddProductToCart\" />
+    <Folder Include="Areas\Shop\Cart\CartCheckout\" />
+    <Folder Include="Areas\Shop\Cart\ConvertCartToOrder\" />
+    <Folder Include="Areas\Shop\Cart\RemoveProductFromCart\" />
+    <Folder Include="Areas\Shop\Cart\ViewMyCart\" />
+    <Folder Include="Areas\Shop\Orders\ListMyOrders\" />
+    <Folder Include="Areas\Shop\Orders\ViewAnOrder\" />
+  </ItemGroup>
+
 </Project>

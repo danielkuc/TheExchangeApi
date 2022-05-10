@@ -18,6 +18,7 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
         }
 
         [HttpPut]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<IActionResult> DeactivateProduct(string Id)
         {
             var deactivatedProduct = await _mediator.Send(new DeactivateProduct.DeactivateProductCommand(Id));

@@ -17,6 +17,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
         }
 
         [HttpPut]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<IActionResult> ActivateProduct(string Id)
         {
             var ActivatedProduct = await _mediator.Send(new ActivateProduct.ActivateProductCommand(Id));
