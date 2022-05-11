@@ -13,17 +13,13 @@ using TheExchangeApi.PipelineBehaviours;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-// Add MediatR
-builder.Services.AddMediatR(typeof(Program).Assembly);
+// Add MediatR and register pipeline behaviours
+builder.Services.AddMediatR(typeof(Program).Assembly)
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>))
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 
 //register validators
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-
-//register validation pipeline behaviour
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-
-//register logging pipeline behaviour
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehaviour<,>));
 
 // get section "ProductDatabase" from appsettings.json
 builder.Services.Configure<ProductDatabaseSettings>(
