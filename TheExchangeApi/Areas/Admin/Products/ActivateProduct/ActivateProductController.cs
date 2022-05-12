@@ -1,28 +1,17 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using static TheExchangeApi.Areas.Admin.Products.ActivateProduct.ActivateProduct;
 
 namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
     [Route("admin/product.activate")]
-    [ApiController]
-    [EnableCors("theExchangeShopPolicy")]
-    public class ActivateProductController : ControllerBase
+    public class ActivateProductController : AccessController
     {
-        private readonly ISender _mediator;
-
-        public ActivateProductController(ISender mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpPut]
-        [Authorize(Policy = "WriteAccess")]
-        public async Task<IActionResult> ActivateProduct(string Id)
-        {
-            var ActivatedProduct = await _mediator.Send(new ActivateProduct.ActivateProductCommand(Id));
-            return Ok(ActivatedProduct);
-        }
+        public async Task<UpdateResult> Action(
+            [FromBody] Request request,
+            [FromServices] ISender mediator,
+            CancellationToken cancellationToken) 
+            => await mediator.Send(request, cancellationToken);
     }
 }

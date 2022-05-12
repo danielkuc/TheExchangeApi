@@ -23,7 +23,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
             string? priceTo = ""
             )
         {
-            var products = await _mediator.Send(new FindManyProducts.FindManyProductsQuery(name, priceFrom, priceTo));
+            var products = await _mediator.Send(new FindManyProducts.FindManyProductsQuery(name!, priceFrom!, priceTo!));
             return Ok(products);
         }
 

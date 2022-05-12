@@ -6,9 +6,11 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
     public class ActivateProduct
     {
-        public record ActivateProductCommand(string Id) : IRequest<UpdateResult>;
+        public record Request(string Id) : IRequest<UpdateResult>;
 
-        public class ActivateProductHandler : IRequestHandler<ActivateProductCommand, UpdateResult>
+        public record Response;
+
+        public class ActivateProductHandler : IRequestHandler<Request, UpdateResult>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
@@ -19,7 +21,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
                 _client = client;
             }
 
-            public Task<UpdateResult> Handle(ActivateProductCommand request, CancellationToken cancellationToken)
+            public Task<UpdateResult> Handle(Request request, CancellationToken cancellationToken)
             {
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
