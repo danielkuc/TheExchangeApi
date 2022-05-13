@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Admin
 {
     [ApiController]
     [EnableCors("theExchangeShopPolicy")]
-    [Authorize(Policy = "WriteAccess")]
+    //[Authorize(Policy = "WriteAccess")]
     public class AccessController : ControllerBase
     {
 

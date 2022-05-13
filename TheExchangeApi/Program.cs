@@ -20,6 +20,13 @@ InjectDatabaseSettings();
 
 GetConnectionStringForMongoClient();
 
+builder.Services.AddSingleton(singleton =>
+    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString"))
+        .GetDatabase(builder.Configuration.GetValue<string>("ProductDatabase:DatabaseName"))
+        .GetCollection<Product>(builder.Configuration.GetValue<string>("ProductDatabase:ProductsCollectionName"))
+
+    );
+
 CorsConfig();
 
 builder.Services.AddControllers();

@@ -12,23 +12,18 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 
         public class ActivateProductHandler : IRequestHandler<Request, Response>
         {
-            private readonly IProductDatabaseSettings _settings;
-            private readonly IMongoClient _client;
+            private readonly IMongoCollection<Product> _collection;
 
-            public ActivateProductHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public ActivateProductHandler(IMongoCollection<Product> collection)
             {
-                _settings = settings;
-                _client = client;
+                _collection = collection;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
                 var activateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, true);
-                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .UpdateOneAsync(filterById, activateProduct, cancellationToken: cancellationToken);
-
+                await _collection.UpdateOneAsync(filterById, activateProduct, cancellationToken: cancellationToken);
                 return await Task.FromResult(new Response());
             }
         }
