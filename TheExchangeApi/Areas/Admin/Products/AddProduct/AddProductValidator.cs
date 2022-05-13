@@ -2,7 +2,7 @@
 
 namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
-    public class AddProductValidator : AbstractValidator<AddProduct.AddProductCommand>
+    public class AddProductValidator : AbstractValidator<AddProduct.Request>
     {
         public AddProductValidator()
         {

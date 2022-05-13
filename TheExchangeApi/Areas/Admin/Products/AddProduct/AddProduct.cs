@@ -6,9 +6,11 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
     public class AddProduct
     {
-        public record AddProductCommand(Product PassedProduct) : IRequest<Product>;
+        public record Request(Product PassedProduct) : IRequest<Response>;
 
-        public class AddProductHandler : IRequestHandler<AddProductCommand, Product>
+        public record Response;
+
+        public class AddProductHandler : IRequestHandler<Request, Response>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
@@ -18,16 +20,16 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 _settings = settings;
                 _client = client;
             }
-            public Task<Product> Handle(AddProductCommand command, CancellationToken cancellationToken)
+            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var newProduct = new Product() 
                               { 
-                                Name = command.PassedProduct.Name,
-                                Description = command.PassedProduct.Description,
-                                Price = command.PassedProduct.Price,
-                                IsAvailable = command.PassedProduct.IsAvailable,
-                                Quantity = command.PassedProduct.Quantity,
-                                AddedBy = command.PassedProduct.AddedBy
+                                Name = request.PassedProduct.Name,
+                                Description = request.PassedProduct.Description,
+                                Price = request.PassedProduct.Price,
+                                IsAvailable = request.PassedProduct.IsAvailable,
+                                Quantity = request.PassedProduct.Quantity,
+                                AddedBy = request.PassedProduct.AddedBy
                               };
 
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
@@ -35,7 +37,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
                     .InsertOneAsync(newProduct, cancellationToken: cancellationToken);
 
-                return Task.FromResult(newProduct);
+                return Task.FromResult(new Response());
             }
         }
     }
