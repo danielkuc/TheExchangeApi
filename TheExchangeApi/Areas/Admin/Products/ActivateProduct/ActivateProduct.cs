@@ -6,11 +6,11 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
     public class ActivateProduct
     {
-        public record Request(string Id) : IRequest<UpdateResult>;
+        public record Request(string Id) : IRequest<Response>;
 
-        public record Response;
+        public record Response();
 
-        public class ActivateProductHandler : IRequestHandler<Request, UpdateResult>
+        public class ActivateProductHandler : IRequestHandler<Request, Response>
         {
             private readonly IProductDatabaseSettings _settings;
             private readonly IMongoClient _client;
@@ -21,7 +21,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
                 _client = client;
             }
 
-            public Task<UpdateResult> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
@@ -29,7 +29,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
                 var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
                     .UpdateOneAsync(filterById, activateProduct, cancellationToken: cancellationToken);
 
-                return updatedProduct;
+                return await Task.FromResult(new Response());
             }
         }
     }
