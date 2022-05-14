@@ -10,15 +10,13 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 
         public record Response;
 
-        public class AddProductHandler : IRequestHandler<Request, Response>
+        public class RequestHandler : IRequestHandler<Request, Response>
         {
-            private readonly IProductDatabaseSettings _settings;
-            private readonly IMongoClient _client;
+            private readonly IMongoCollection<Product> _collection;
 
-            public AddProductHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public RequestHandler(IMongoCollection<Product> collection)
             {
-                _settings = settings;
-                _client = client;
+                _collection = collection;
             }
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
@@ -32,10 +30,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                                 AddedBy = request.PassedProduct.AddedBy
                               };
 
-                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
-
-                productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .InsertOneAsync(newProduct, cancellationToken: cancellationToken);
+                _collection.InsertOneAsync(newProduct, cancellationToken: cancellationToken);
 
                 return Task.FromResult(new Response());
             }

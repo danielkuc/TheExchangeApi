@@ -10,11 +10,11 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 
         public record Response();
 
-        public class ActivateProductHandler : IRequestHandler<Request, Response>
+        public class RequestHandler : IRequestHandler<Request, Response>
         {
             private readonly IMongoCollection<Product> _collection;
 
-            public ActivateProductHandler(IMongoCollection<Product> collection)
+            public RequestHandler(IMongoCollection<Product> collection)
             {
                 _collection = collection;
             }

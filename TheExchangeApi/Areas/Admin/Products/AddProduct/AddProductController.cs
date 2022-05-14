@@ -9,16 +9,10 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
     {
 
         [HttpPost]
-        //public async Task<IActionResult> CreateNewProduct(Product newProduct)
-        //{
-        //    var createdProduct = await _mediator.Send(new AddProduct.AddProductCommand(newProduct));
-
-        //    return Created("admin/product.add", createdProduct);
-        //}
-
         public async Task<Response> Action(
             [FromBody] Request request,
             [FromServices] ISender mediator,
-            CancellationToken cancellationToken) => await mediator.Send(request, cancellationToken);
+            CancellationToken cancellationToken)
+            => await mediator.Send(request, cancellationToken);
     }
 }
