@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using static TheExchangeApi.Areas.Admin.Products.ActivateProduct.ActivateProduct;
 
 namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct

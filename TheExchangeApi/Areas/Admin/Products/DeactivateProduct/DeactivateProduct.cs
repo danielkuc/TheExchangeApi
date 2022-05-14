@@ -6,27 +6,29 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
     public class DeactivateProduct
     {
-        public record DeactivateProductCommand(string Id) : IRequest<UpdateResult>;
+        public record Request(string Id) : IRequest<Response>;
+        public record Response;
 
-        public class DeactivateProductHandler : IRequestHandler<DeactivateProductCommand, UpdateResult>
+        public class RequestHandler : IRequestHandler<Request, Response>
         {
-            private readonly IProductDatabaseSettings _settings;
-            private readonly IMongoClient _client;
+            private readonly IMongoCollection<Product> _collection;
 
-            public DeactivateProductHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public RequestHandler(IMongoCollection<Product> collection)
             {
-                _settings = settings;
-                _client = client;
+                _collection = collection;
             }
-            public Task<UpdateResult> Handle(DeactivateProductCommand request, CancellationToken cancellationToken)
+            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
                 var deactivateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, false);
-                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .UpdateOneAsync(filterById, deactivateProduct, cancellationToken: cancellationToken);
+                var updatedProduct = _collection.
+                    UpdateOneAsync(
+                    filterById,
+                    deactivateProduct,
+                    cancellationToken: cancellationToken
+                    );
 
-                return updatedProduct;
+                return Task.FromResult(new Response());
             }
         }
     }
