@@ -8,23 +8,20 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
     public class FindManyProducts
     {
-        public record FindManyProductsQuery(string Name, string PriceFrom, string PriceTo) : IRequest<List<Product>>;
+        public record Request(string? Name, string? PriceFrom, string? PriceTo) : IRequest<Result>;
+        public record Result(List<Product> ProductList);
 
-        public class FindManyProductsHandler : IRequestHandler<FindManyProductsQuery, List<Product>>
+        public class RequestHandler : IRequestHandler<Request, Result>
         {
-            private readonly IProductDatabaseSettings _settings;
-            private readonly IMongoClient _client;
+            private readonly IMongoCollection<Product> _collection;
 
-            public FindManyProductsHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public RequestHandler(IMongoCollection<Product> collection)
             {
-                _settings = settings;
-                _client = client;
+                _collection = collection;
             }
 
-            public Task<List<Product>> Handle(FindManyProductsQuery request, CancellationToken cancellationToken)
+            public Task<Result> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
-                var productCollection = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName);
                 var filter = Builders<Product>.Filter.Eq(product => product.IsAvailable, true);
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
@@ -41,10 +38,9 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
                     var priceFilter = Builders<Product>.Filter.Gt("price",convertedPriceFrom) & Builders<Product>.Filter.Lt("price", convertedPriceTo);
                     filter &= priceFilter;
                 }
+                var products = _collection.Find(filter).ToList(cancellationToken: cancellationToken);
 
-                var products = productCollection.Find(filter).ToList(cancellationToken: cancellationToken);
-
-                return Task.FromResult(products);
+                return Task.FromResult(new Result(products));
             }
         }
     }
