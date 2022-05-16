@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using static TheExchangeApi.Areas.Admin.Products.FindOneProduct.FindOneProduct;
 
 namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
 {
@@ -9,18 +10,10 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
     [EnableCors("theExchangeShopPolicy")]
     public class FindOneProductController : ControllerBase
     {
-        private readonly ISender _mediator;
-
-        public FindOneProductController(ISender mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
-        public async Task<IActionResult> FindOneProductById(string Id)
-        {
-            var product = await _mediator.Send(new FindOneProduct.FindOneProductQuery(Id));
-            return Ok(product);
-        }
+        public async Task<ProductResponse> Action(
+            [FromQuery] ProductRequest request,
+            [FromServices] ISender mediator
+            ) => await mediator.Send(request);
     }
 }

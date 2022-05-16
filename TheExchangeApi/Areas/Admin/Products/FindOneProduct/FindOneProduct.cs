@@ -6,29 +6,27 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
 {
     public class FindOneProduct
     {
-        public record FindOneProductQuery(string Id) : IRequest<Product>;
+        public record ProductRequest(string Id) : IRequest<ProductResponse>;
+        public record ProductResponse(Product Product);
 
-        public class FindOneProductHandler : IRequestHandler<FindOneProductQuery, Product>
+        public class RequestHandler : IRequestHandler<ProductRequest, ProductResponse>
         {
-            private readonly IProductDatabaseSettings _settings;
-            private readonly IMongoClient _client;
+            private readonly IMongoCollection<Product> _collection;
 
-            public FindOneProductHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public RequestHandler(IMongoCollection<Product> collection)
             {
-                _settings = settings;
-                _client = client;
+                _collection = collection;
             }
 
-            public Task<Product> Handle(FindOneProductQuery request, CancellationToken cancellationToken)
+            public Task<ProductResponse> Handle(ProductRequest request, CancellationToken cancellationToken)
             {
-                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
-
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
 
-                var firstFoundProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName)
-                    .Find(filterById).FirstOrDefault(cancellationToken: cancellationToken);
+                var firstFoundProduct = _collection
+                    .Find(filterById)
+                    .FirstOrDefault(cancellationToken: cancellationToken);
 
-                return Task.FromResult(firstFoundProduct);
+                return Task.FromResult(new ProductResponse(firstFoundProduct));
             }
         }
 
