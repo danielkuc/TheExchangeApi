@@ -6,10 +6,10 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
 {
     public class FindOneProduct
     {
-        public record ProductRequest(string Id) : IRequest<ProductResponse>;
-        public record ProductResponse(Product Product);
+        public record ProductRequest(string Id) : IRequest<Response>;
+        public record Response(Product Product);
 
-        public class RequestHandler : IRequestHandler<ProductRequest, ProductResponse>
+        public class RequestHandler : IRequestHandler<ProductRequest, Response>
         {
             private readonly IMongoCollection<Product> _collection;
 
@@ -18,7 +18,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
                 _collection = collection;
             }
 
-            public Task<ProductResponse> Handle(ProductRequest request, CancellationToken cancellationToken)
+            public Task<Response> Handle(ProductRequest request, CancellationToken cancellationToken)
             {
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
 
@@ -26,7 +26,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
                     .Find(filterById)
                     .FirstOrDefault(cancellationToken: cancellationToken);
 
-                return Task.FromResult(new ProductResponse(firstFoundProduct));
+                return Task.FromResult(new Response(firstFoundProduct));
             }
         }
 

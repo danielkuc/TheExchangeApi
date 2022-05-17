@@ -11,7 +11,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
     public class FindOneProductController : ControllerBase
     {
         [HttpGet]
-        public async Task<ProductResponse> Action(
+        public async Task<Response> Action(
             [FromQuery] ProductRequest request,
             [FromServices] ISender mediator
             ) => await mediator.Send(request);

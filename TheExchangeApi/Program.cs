@@ -34,6 +34,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+OverrideSwaggerSchemaIdGeneration();
 JwtAuthentication();
 AddAuthPolicies();
 
@@ -102,6 +103,11 @@ void AddAuthPolicies()
         options.AddPolicy("WriteAccess", policy => policy.RequireClaim("permissions", "write:products"));
     });
 }
+void OverrideSwaggerSchemaIdGeneration()
+{
+    builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(type => type.FullName));
+}
+
 
 var app = builder.Build();
 

@@ -8,9 +8,10 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
     public class FindManyProductsController : AccessController
     {
         [HttpGet]
-        public async Task<Result> Action(
+        public async Task<Response> Action(
             [FromQuery] Request request,
-            [FromServices] ISender mediator
-            ) => await mediator.Send(request);
+            [FromServices] ISender mediator,
+            CancellationToken cancellationToken
+            ) => await mediator.Send(request, cancellationToken);
     }
 }
