@@ -5,7 +5,7 @@ using static TheExchangeApi.Areas.Admin.Products.FindManyProducts.FindManyProduc
 namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
     [Route("admin/product.findManyProducts")]
-    public class FindManyProductsController : AccessController
+    public class FindManyProductsController : BaseAdminController
     {
         [HttpGet]
         public async Task<Response> Action(

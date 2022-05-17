@@ -1,31 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using Microsoft.AspNetCore.Cors;
+using static TheExchangeApi.Areas.Shop.Products.FindManyProducts.FindManyProducts;
 
 namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
 {
-    [ApiController]
     [Route("shop/product.findManyProducts")]
-    [EnableCors("theExchangeShopPolicy")]
-    public class FindManyProductsController : ControllerBase
+    public class FindManyProductsController : BaseShopController
     {
-        private readonly ISender _mediator;
-
-        public FindManyProductsController(ISender mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
-        public async Task<IActionResult> FindManyProducts(
-            string? name = "", 
-            string? priceFrom = "", 
-            string? priceTo = ""
-            )
-        {
-            var products = await _mediator.Send(new FindManyProducts.FindManyProductsQuery(name, priceFrom, priceTo));
-            return Ok(products);
-        }
-
+        public async Task<Response> Action(
+            [FromQuery] Request request,
+            [FromServices] ISender mediator,
+            CancellationToken cancellationToken
+            ) => await mediator.Send(request, cancellationToken);
     }
 }
