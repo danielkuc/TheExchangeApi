@@ -6,31 +6,31 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 {
     public class UpdateProductFields
     {
-        public record UpdateProductFieldsCommand (Product ProductToUpdate) : IRequest<UpdateResult>;
+        public record Request (Product ProductToUpdate) : IRequest<Response>;
+        public record Response;
 
-        public class UpdateProductFieldsHandler : IRequestHandler<UpdateProductFieldsCommand, UpdateResult>
+        public class RequestHandler : IRequestHandler<Request, Response>
         {
-            private readonly IProductDatabaseSettings _settings;
-            private readonly IMongoClient _client;
+            private readonly IMongoCollection<Product> _collection;
 
-            public UpdateProductFieldsHandler(IProductDatabaseSettings settings, IMongoClient client)
+            public RequestHandler(IMongoCollection<Product> collection)
             {
-                _settings = settings;
-                _client = client;
+                _collection = collection;
             }
 
-            public Task<UpdateResult> Handle(UpdateProductFieldsCommand request, CancellationToken cancellationToken)
+            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productDatabase = _client.GetDatabase(_settings.DatabaseName);
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.ProductToUpdate.Id);
-                var updateProduct = Builders<Product>.Update.Set(p => p.Quantity, request.ProductToUpdate.Quantity)
+                var updateProduct = Builders<Product>
+                    .Update.Set(p => p.Quantity, request.ProductToUpdate.Quantity)
                                                             .Set(p => p.Price, request.ProductToUpdate.Price)
                                                             .Set(p => p.Name, request.ProductToUpdate.Name)
                                                             .Set(p => p.Description, request.ProductToUpdate.Description);
 
-                var updatedProduct = productDatabase.GetCollection<Product>(_settings.ProductsCollectionName).UpdateManyAsync(filterById, updateProduct, cancellationToken: cancellationToken);
-                
-                return updatedProduct;
+                var updatedProduct = _collection
+                    .UpdateManyAsync(filterById, updateProduct, cancellationToken: cancellationToken);
+
+                return Task.FromResult(new Response());
             }
         }
     }
