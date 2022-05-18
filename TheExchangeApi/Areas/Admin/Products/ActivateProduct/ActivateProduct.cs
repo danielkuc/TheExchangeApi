@@ -7,7 +7,6 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
     public class ActivateProduct
     {
         public record Request(string Id) : IRequest<Response>;
-
         public record Response();
 
         public class RequestHandler : IRequestHandler<Request, Response>
@@ -18,7 +17,6 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
             {
                 _collection = collection;
             }
-
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);

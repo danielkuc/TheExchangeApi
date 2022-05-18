@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Microsoft.IdentityModel.Tokens;
@@ -14,18 +13,7 @@ RegisterMediatR();
 
 RegisterValidators();
 
-GetDatabaseName();
-
-InjectDatabaseSettings();
-
-GetConnectionStringForMongoClient();
-
-builder.Services.AddSingleton(singleton =>
-    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString"))
-        .GetDatabase(builder.Configuration.GetValue<string>("ProductDatabase:DatabaseName"))
-        .GetCollection<Product>(builder.Configuration.GetValue<string>("ProductDatabase:ProductsCollectionName"))
-
-    );
+InjectIMongoCollection();
 
 CorsConfig();
 
@@ -35,7 +23,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 OverrideSwaggerSchemaIdGeneration();
+
 JwtAuthentication();
+
 AddAuthPolicies();
 
 
@@ -48,21 +38,6 @@ void RegisterMediatR()
 void RegisterValidators()
 {
     builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-}
-void GetDatabaseName()
-{
-    builder.Services.Configure<ProductDatabaseSettings>(
-    builder.Configuration.GetSection("ProductDatabase"));
-}
-void InjectDatabaseSettings()
-{
-    builder.Services.AddSingleton<IProductDatabaseSettings>(serviceProvider =>
-    serviceProvider.GetRequiredService<IOptions<ProductDatabaseSettings>>().Value);
-}
-void GetConnectionStringForMongoClient()
-{
-    builder.Services.AddSingleton<IMongoClient>(singleton =>
-    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString")));
 }
 void CorsConfig()
 {
@@ -106,6 +81,15 @@ void AddAuthPolicies()
 void OverrideSwaggerSchemaIdGeneration()
 {
     builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(type => type.FullName));
+}
+void InjectIMongoCollection()
+{
+    builder.Services.AddSingleton(singleton =>
+    new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString"))
+        .GetDatabase(builder.Configuration.GetValue<string>("ProductDatabase:DatabaseName"))
+        .GetCollection<Product>(builder.Configuration.GetValue<string>("ProductDatabase:ProductsCollectionName"))
+
+    );
 }
 
 

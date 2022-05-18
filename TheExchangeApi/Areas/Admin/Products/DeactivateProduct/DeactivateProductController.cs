@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static TheExchangeApi.Areas.Admin.Products.ActivateProduct.ActivateProduct;
+using static TheExchangeApi.Areas.Admin.Products.DeactivateProduct.DeactivateProduct;
 
 namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
