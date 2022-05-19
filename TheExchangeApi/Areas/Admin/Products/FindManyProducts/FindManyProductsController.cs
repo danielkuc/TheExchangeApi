@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using static TheExchangeApi.Areas.Admin.Products.FindManyProducts.FindManyProducts;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
