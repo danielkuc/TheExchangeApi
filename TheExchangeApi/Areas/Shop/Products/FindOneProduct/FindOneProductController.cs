@@ -4,7 +4,7 @@ using static TheExchangeApi.Areas.Shop.Products.FindOneProduct.FindOneProduct;
 
 namespace TheExchangeApi.Areas.Shop.Products.FindOneProduct
 {
-    [Route("shop/product.findOneProduct")]
+    [Route("shop/product.view")]
     public class FindOneProductController : BaseShopController
     {
         [HttpGet]

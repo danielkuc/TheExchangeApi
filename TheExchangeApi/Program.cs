@@ -63,8 +63,8 @@ void JwtAuthentication()
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     }).AddJwtBearer(options =>
     {
-        options.Authority = "https://the-exchange.eu.auth0.com";
-        options.Audience = "https://exchange/api";
+        options.Authority = builder.Configuration.GetValue<string>("Auth0:Authority");
+        options.Audience = builder.Configuration.GetValue<string>("Auth0:Audience");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             NameClaimType = ClaimTypes.NameIdentifier

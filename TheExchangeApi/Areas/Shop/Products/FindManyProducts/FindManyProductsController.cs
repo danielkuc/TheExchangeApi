@@ -4,7 +4,7 @@ using static TheExchangeApi.Areas.Shop.Products.FindManyProducts.FindManyProduct
 
 namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
 {
-    [Route("shop/product.findManyProducts")]
+    [Route("shop/products.list")]
     public class FindManyProductsController : BaseShopController
     {
         [HttpGet]
