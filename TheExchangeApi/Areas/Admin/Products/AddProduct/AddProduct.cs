@@ -6,7 +6,15 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 {
     public class AddProduct
     {
-        public record Request(Product PassedProduct) : IRequest<Response>;
+        public record Request : IRequest<Response>
+        {
+            public string Name { get; set; } = string.Empty;
+            public string Description { get; set; } = string.Empty;
+            public double Price { get; set; }
+            public bool IsAvailable { get; set; }
+            public int Quantity { get; set; }
+            public string AddedBy { get; set; } = string.Empty;
+        }
 
         public record Response;
 
@@ -22,12 +30,12 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             {
                 var newProduct = new Product() 
                               { 
-                                Name = request.PassedProduct.Name,
-                                Description = request.PassedProduct.Description,
-                                Price = request.PassedProduct.Price,
-                                IsAvailable = request.PassedProduct.IsAvailable,
-                                Quantity = request.PassedProduct.Quantity,
-                                AddedBy = request.PassedProduct.AddedBy
+                                Name = request.Name,
+                                Description = request.Description,
+                                Price = request.Price,
+                                IsAvailable = request.IsAvailable,
+                                Quantity = request.Quantity,
+                                AddedBy = request.AddedBy
                               };
 
                 _collection.InsertOneAsync(newProduct, cancellationToken: cancellationToken);

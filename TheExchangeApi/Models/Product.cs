@@ -9,22 +9,16 @@ namespace TheExchangeApi.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = string.Empty;
 
-        [BsonElement("name")]
         public string Name { get; set; } = string.Empty;
 
-        [BsonElement("description")]
         public string Description { get; set; } = string.Empty;
 
-        [BsonElement("price")]
         public double Price { get; set; } = 0.00;
 
-        [BsonElement("isAvailable")]
         public bool IsAvailable { get; set; }
 
-        [BsonElement("quantity")]
         public int Quantity { get; set; } = 0;
 
-        [BsonElement("addedBy")]
         public string AddedBy { get; set; } = string.Empty;  
     }
 }
