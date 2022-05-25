@@ -20,11 +20,8 @@ namespace TheExchangeApi.Areas.Shop.Products.FindOneProduct
 
             public Task<Response> Handle(ProductRequest request, CancellationToken cancellationToken)
             {
-                var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
-
-                var firstFoundProduct = _collection
-                    .Find(filterById)
-                    .FirstOrDefault(cancellationToken: cancellationToken);
+                var firstFoundProduct = _collection.AsQueryable()
+                    .First(x => x.Id == request.Id);
 
                 return Task.FromResult(new Response(firstFoundProduct));
             }
