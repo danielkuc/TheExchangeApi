@@ -8,7 +8,7 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 {
     public class FindManyProducts
     {
-        public record Request(string? Name, string? PriceFrom, string? PriceTo) : IRequest<Response>;
+        public record Request(string? Name, double? PriceFrom, double? PriceTo) : IRequest<Response>;
         public record Response(List<Product> ProductList);
 
         public class RequestHandler : IRequestHandler<Request, Response>
@@ -22,25 +22,33 @@ namespace TheExchangeApi.Areas.Admin.Products.FindManyProducts
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var filter = Builders<Product>.Filter.Eq(product => product.IsAvailable, true);
+                //var filter = Builders<Product>.Filter.Eq(product => product.IsAvailable, true);
+                var query = _collection.AsQueryable().Where(p => p.IsAvailable);
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
                 {
-                    var nameFilter = Builders<Product>.Filter.
-                        Regex("name", new BsonRegularExpression(new Regex(request.Name, RegexOptions.IgnoreCase)));
-                    filter &= nameFilter;
+                    //var nameFilter = Builders<Product>.Filter.
+                    //    Regex("name", new BsonRegularExpression(new Regex(request.Name, RegexOptions.IgnoreCase)));
+                    //filter &= nameFilter;
+                    query = query.Where(p => p.Name.Contains(request.Name));
                 }
 
-                if (!string.IsNullOrWhiteSpace(request.PriceFrom) && !string.IsNullOrWhiteSpace(request.PriceTo))
+                if (request.PriceFrom.HasValue)
                 {
-                    var convertedPriceFrom = Convert.ToDouble(request.PriceFrom);
-                    var convertedPriceTo = Convert.ToDouble(request.PriceTo);
-                    var priceFilter = Builders<Product>.Filter.Gt("price",convertedPriceFrom) & Builders<Product>.Filter.Lt("price", convertedPriceTo);
-                    filter &= priceFilter;
+                    //var convertedPriceFrom = Convert.ToDouble(request.PriceFrom);
+                    //var convertedPriceTo = Convert.ToDouble(request.PriceTo);
+                    //var priceFilter = Builders<Product>.Filter.Gt("price",convertedPriceFrom) & Builders<Product>.Filter.Lt("price", convertedPriceTo);
+                    //filter &= priceFilter;
+                    query = query.Where(p => p.Price >= request.PriceFrom);
                 }
-                var products = _collection.Find(filter).ToList(cancellationToken: cancellationToken);
 
-                return Task.FromResult(new Response(products));
+                if (request.PriceTo.HasValue)
+                {
+                    query = query.Where(p => p.Price <= request.PriceTo);
+                }
+                //var products = _collection.Find(filter).ToList(cancellationToken: cancellationToken);
+
+                return Task.FromResult(new Response(query.ToList()));
             }
         }
     }
