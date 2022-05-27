@@ -19,6 +19,7 @@ namespace TheExchangeApi.Models
         [BsonElement("quantity")]
         public int Quantity { get; set; } = 0;
         [BsonElement("addedBy")]
-        public string AddedBy { get; set; } = string.Empty;  
+        public string AddedBy { get; set; } = string.Empty; 
+        public long Version { get; set; } = 0;
     }
 }
