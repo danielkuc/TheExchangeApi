@@ -19,9 +19,11 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
-                var activateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, true);
-                await _collection.UpdateOneAsync(filterById, activateProduct, cancellationToken: cancellationToken);
+                 await _collection.FindOneAndUpdateAsync(
+                     p => p.Id == request.Id, 
+                     Builders<Product>.Update.Set(p => p.IsAvailable, true), 
+                     cancellationToken: cancellationToken
+                     );
                 return await Task.FromResult(new Response());
             }
         }

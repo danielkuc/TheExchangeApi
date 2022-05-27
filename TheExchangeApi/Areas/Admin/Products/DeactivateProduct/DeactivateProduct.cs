@@ -19,9 +19,11 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.Id);
-                var deactivateProduct = Builders<Product>.Update.Set(p => p.IsAvailable, false);
-                await _collection.UpdateOneAsync(filterById, deactivateProduct, cancellationToken: cancellationToken);
+                await _collection.FindOneAndUpdateAsync(
+                    p => p.Id == request.Id,
+                    Builders<Product>.Update.Set(p => p.IsAvailable, false),
+                    cancellationToken: cancellationToken
+                    );
                 return await Task.FromResult(new Response());
             }
         }

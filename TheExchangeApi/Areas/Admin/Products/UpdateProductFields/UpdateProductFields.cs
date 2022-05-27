@@ -28,7 +28,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                                                             .Set(p => p.Description, request.ProductToUpdate.Description);
 
                 var updatedProduct = _collection
-                    .UpdateManyAsync(filterById, updateProduct, cancellationToken: cancellationToken);
+                    .UpdateOneAsync(filterById, updateProduct, cancellationToken: cancellationToken);
 
                 return Task.FromResult(new Response());
             }
