@@ -20,26 +20,19 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var product =  _collection.AsQueryable().Where(p => p.Id == request.ProductToUpdate.Id).Single();
-                product.Version++;
+                var dbProduct = _collection.AsQueryable().Where(p => p.Id == request.ProductToUpdate.Id).Single();
+                var newProduct = request.ProductToUpdate;
 
-                _collection.ReplaceOneAsync(
-                    p => p.Id == request.ProductToUpdate.Id && p.Version == request.ProductToUpdate.Version,
-                    product,
-                    new ReplaceOptions {IsUpsert = false },
-                    cancellationToken: cancellationToken
-                    );
+                if (dbProduct.Version != newProduct.Version)
+                {
+                    throw new Exception("Invalid product version");
+                }
+                else
+                {
+                    newProduct.Version++;
+                    _collection.ReplaceOneAsync(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);
 
-                //var filterById = Builders<Product>.Filter.Eq(product => product.Id, request.ProductToUpdate.Id);
-                //var updateProduct = Builders<Product>
-                //    .Update.Set(p => p.Quantity, request.ProductToUpdate.Quantity)
-                //                                            .Set(p => p.Price, request.ProductToUpdate.Price)
-                //                                            .Set(p => p.Name, request.ProductToUpdate.Name)
-                //                                            .Set(p => p.Description, request.ProductToUpdate.Description);
-
-                //var updatedProduct = _collection
-                //    .UpdateOneAsync(filterById, updateProduct, cancellationToken: cancellationToken);
-
+                }
 
                 return Task.FromResult(new Response());
             }
