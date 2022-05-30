@@ -27,13 +27,8 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                 {
                     throw new Exception("Invalid product version");
                 }
-                else
-                {
-                    newProduct.Version++;
-                    _collection.ReplaceOneAsync(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);
-
-                }
-
+                newProduct.Version++;
+                _collection.ReplaceOneAsync(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);
                 return Task.FromResult(new Response());
             }
         }
