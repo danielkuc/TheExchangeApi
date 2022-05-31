@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MongoDB.Driver;
 using TheExchangeApi.Models;
+using Polly;
 
 namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 {
@@ -25,7 +26,9 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 
                 if (dbProduct.Version != newProduct.Version)
                 {
+                    var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount:3, sleepDurationProvider: _ => TimeSpan.FromSeconds(2));
                     throw new Exception("Invalid product version");
+
                 }
                 newProduct.Version++;
                 _collection.ReplaceOneAsync(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);

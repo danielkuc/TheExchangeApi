@@ -1,6 +1,6 @@
 ﻿namespace TheExchangeApi.Areas.Admin
 {
-    public class Policy
+    public class AdminPolicy
     {
         public const string CanuseAdministratorEndpoints = nameof(CanuseAdministratorEndpoints);
     }
