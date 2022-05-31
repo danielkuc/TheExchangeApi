@@ -24,13 +24,11 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                 var dbProduct = _collection.AsQueryable().Where(p => p.Id == request.ProductToUpdate.Id).Single();
                 var newProduct = request.ProductToUpdate;
 
+                var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount: 3, sleepDurationProvider: _ => TimeSpan.FromSeconds(2));
+
                 if (dbProduct.Version != newProduct.Version)
                 {
-                    var retryPolicy = Policy.Handle<Exception>()
-                        .WaitAndRetryAsync(retryCount:3, sleepDurationProvider: _ => TimeSpan.FromSeconds(2));
-
-                    retryPolicy.ExecuteAsync(() => throw new Exception($"Failed to update document. Id='{dbProduct.Version}' ConcurrencyId='{request.ProductToUpdate.Version}'"));
-
+                    throw new Exception($"Failed to update document. Id='{dbProduct.Version}' ConcurrencyId='{request.ProductToUpdate.Version}'");
                 }
                 newProduct.Version++;
                 _collection.ReplaceOneAsync(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);
