@@ -26,8 +26,10 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 
                 if (dbProduct.Version != newProduct.Version)
                 {
-                    var retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount:3, sleepDurationProvider: _ => TimeSpan.FromSeconds(2));
-                    throw new Exception("Invalid product version");
+                    var retryPolicy = Policy.Handle<Exception>()
+                        .WaitAndRetryAsync(retryCount:3, sleepDurationProvider: _ => TimeSpan.FromSeconds(2));
+
+                    retryPolicy.ExecuteAsync(() => throw new Exception($"Failed to update document. Id='{dbProduct.Version}' ConcurrencyId='{request.ProductToUpdate.Version}'"));
 
                 }
                 newProduct.Version++;
