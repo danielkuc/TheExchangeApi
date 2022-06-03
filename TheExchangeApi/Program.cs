@@ -19,6 +19,7 @@ CorsConfig();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+RegisterAndInjectHttpAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -28,7 +29,11 @@ JwtAuthentication();
 
 AddAuthPolicies();
 
-
+void RegisterAndInjectHttpAccessor()
+{
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+}
 void RegisterMediatR()
 {
     builder.Services.AddMediatR(typeof(Program).Assembly)
