@@ -30,8 +30,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                 {
                     throw new Exception($"Failed to update document. Database version='{dbProduct.Version}' Current version='{request.ProductToUpdate.Version}'");
                 }
-                newProduct.Version = dbProduct.Version;
-                newProduct.Version++;
+                newProduct.Version = ++dbProduct.Version;
                 _collection.ReplaceOne(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);
                 return Task.FromResult(new Response());
             }
