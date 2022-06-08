@@ -6,12 +6,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using FluentValidation;
 using TheExchangeApi.PipelineBehaviours;
+using Microsoft.AspNetCore.Mvc.Filters;
+using TheExchangeApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 RegisterMediatR();
 
 RegisterValidators();
+RegisterAndInjectValidationFilter();
 
 InjectIMongoCollection();
 
@@ -29,6 +32,10 @@ JwtAuthentication();
 
 AddAuthPolicies();
 
+void RegisterAndInjectValidationFilter()
+{
+    builder.Services.AddScoped<IExceptionFilter, ValidationExceptionFilter>();
+}
 void RegisterAndInjectHttpAccessor()
 {
     builder.Services.AddHttpContextAccessor();
