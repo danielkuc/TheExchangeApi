@@ -15,10 +15,16 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                 .Length(5, 25)
                 .WithMessage("Product description should be between 5 and 25 characters");
             RuleFor(p => p.Price)
+                .NotEmpty()
+                .GreaterThanOrEqualTo(0);
+            RuleFor(p => p.IsAvailable)
                 .NotEmpty();
-            RuleFor(p => p.IsAvailable).NotNull().NotEmpty();
-            RuleFor(p => p.Quantity).NotEmpty();
-            RuleFor(p => p.AddedBy).NotEmpty().NotNull().EmailAddress();
+            RuleFor(p => p.Quantity)
+                .NotEmpty()
+                .GreaterThanOrEqualTo(0);
+            RuleFor(p => p.AddedBy)
+                .NotEmpty()
+                .EmailAddress();
         }
     }
 }
