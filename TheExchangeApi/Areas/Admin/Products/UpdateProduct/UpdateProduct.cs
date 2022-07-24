@@ -3,9 +3,9 @@ using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Polly;
 
-namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
+namespace TheExchangeApi.Areas.Admin.Products.UpdateProduct
 {
-    public class UpdateProductFields
+    public class UpdateProduct
     {
         public record Request (Product ProductToUpdate) : IRequest<Response>;
         public record Response;
@@ -19,9 +19,12 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                 _collection = collection;
             }
 
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dbProduct = _collection.AsQueryable().Where(p => p.Id == request.ProductToUpdate.Id).Single();
+                var dbProduct = _collection.AsQueryable()
+                    .Where(p => p.Id == request.ProductToUpdate.Id)
+                    .Single();
+
                 var newProduct = request.ProductToUpdate;
 
                 var retryPolicy = Policy.Handle<Exception>().Retry(retryCount: 3);
@@ -31,8 +34,13 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
                     throw new Exception($"Failed to update document. Database version='{dbProduct.Version}' Current version='{request.ProductToUpdate.Version}'");
                 }
                 newProduct.Version = ++dbProduct.Version;
-                _collection.ReplaceOne(p => p.Id == newProduct.Id, newProduct, new ReplaceOptions { IsUpsert = false}, cancellationToken: cancellationToken);
-                return Task.FromResult(new Response());
+                _collection
+                    .ReplaceOne(p => p.Id == newProduct.Id,
+                                newProduct,
+                                new ReplaceOptions { IsUpsert = false},
+                                cancellationToken: cancellationToken);
+                
+                return await Task.FromResult(new Response());
             }
         }
     }

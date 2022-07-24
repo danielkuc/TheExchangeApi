@@ -1,12 +1,13 @@
 ﻿using MongoDB.Driver;
 using MediatR;
 using TheExchangeApi.Models;
+using MongoDB.Bson;
 
 namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
 {
     public class FindOneProduct
     {
-        public record ProductRequest(string Id) : IRequest<Response>;
+        public record ProductRequest(ObjectId Id) : IRequest<Response>;
         public record Response(Product Product);
 
         public class RequestHandler : IRequestHandler<ProductRequest, Response>
@@ -18,12 +19,12 @@ namespace TheExchangeApi.Areas.Admin.Products.FindOneProduct
                 _collection = collection;
             }
 
-            public Task<Response> Handle(ProductRequest request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(ProductRequest request, CancellationToken cancellationToken)
             {
                 var firstFoundProduct = _collection.AsQueryable()
-                    .First(product => product.Id == request.Id);
+                    .First(p => p.Id == request.Id);
 
-                return Task.FromResult(new Response(firstFoundProduct));
+                return await Task.FromResult(new Response(firstFoundProduct));
             }
         }
 

@@ -26,7 +26,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             {
                 _collection = collection;
             }
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var newProduct = new Product() 
                               { 
@@ -38,9 +38,9 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                                 AddedBy = request.AddedBy
                               };
 
-                _collection.InsertOneAsync(newProduct, cancellationToken: cancellationToken);
+                await _collection.InsertOneAsync(newProduct, cancellationToken: cancellationToken);
 
-                return Task.FromResult(new Response());
+                return await Task.FromResult(new Response());
             }
         }
     }

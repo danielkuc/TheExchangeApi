@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using TheExchangeApi.Models;
 
@@ -6,7 +7,7 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
     public class ActivateProduct
     {
-        public record Request(string Id) : IRequest<Response>;
+        public record Request(ObjectId Id) : IRequest<Response>;
         public record Response();
 
         public class RequestHandler : IRequestHandler<Request, Response>

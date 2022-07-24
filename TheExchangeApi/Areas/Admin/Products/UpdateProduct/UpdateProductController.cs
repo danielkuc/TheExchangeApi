@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static TheExchangeApi.Areas.Admin.Products.UpdateProductFields.UpdateProductFields;
+using static TheExchangeApi.Areas.Admin.Products.UpdateProduct.UpdateProduct;
 
 namespace TheExchangeApi.Areas.Admin.Products.UpdateProductFields
 {
     [Route("admin/product.update")]
-    public class UpdateProductFieldsController : AccessController
+    public class UpdateProductController : AccessController
     {
         [HttpPost]
         public async Task<Response> Action(

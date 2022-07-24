@@ -6,37 +6,30 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using FluentValidation;
 using TheExchangeApi.PipelineBehaviours;
-using Microsoft.AspNetCore.Mvc.Filters;
-using TheExchangeApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 RegisterMediatR();
 
 RegisterValidators();
-RegisterAndInjectValidationFilter();
 
-InjectIMongoCollection();
+RegisterIMongoCollection();
 
 CorsConfig();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-RegisterAndInjectHttpAccessor();
+RegisterHttpAccessor();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-OverrideSwaggerSchemaIdGeneration();
+RegisterSwagger();
 
 JwtAuthentication();
 
 AddAuthPolicies();
 
-void RegisterAndInjectValidationFilter()
-{
-    builder.Services.AddScoped<IExceptionFilter, ValidationExceptionFilter>();
-}
-void RegisterAndInjectHttpAccessor()
+
+void RegisterHttpAccessor()
 {
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
@@ -86,14 +79,14 @@ void JwtAuthentication()
 void AddAuthPolicies()
 {
     builder.Services.AddAuthorization(options => {
-        options.AddPolicy("ReadAccess", policy => policy.RequireClaim("permissions", "read:products"));
+        options.AddPolicy("WriteAccess", policy => policy.RequireClaim("permissions", "write:products"));
     });
 }
-void OverrideSwaggerSchemaIdGeneration()
+void RegisterSwagger()
 {
     builder.Services.AddSwaggerGen(options => options.CustomSchemaIds(type => type.FullName));
 }
-void InjectIMongoCollection()
+void RegisterIMongoCollection()
 {
     builder.Services.AddSingleton(singleton =>
     new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString"))

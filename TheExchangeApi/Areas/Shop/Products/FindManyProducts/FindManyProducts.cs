@@ -18,7 +18,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
                 _collection = collection;
             }
 
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var query = _collection.AsQueryable().Where(p => p.IsAvailable);
 
@@ -32,7 +32,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
                     query = query.Where(p => p.Price <= request.PriceTo);
                 var result = new Response(query.ToList());
 
-                return Task.FromResult(new Response(query.ToList()));
+                return await Task.FromResult(new Response(query.ToList()));
             }
         }
     }

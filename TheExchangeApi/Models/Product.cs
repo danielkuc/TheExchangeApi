@@ -7,7 +7,7 @@ namespace TheExchangeApi.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = string.Empty;
+        public ObjectId Id { get; set; } 
         [BsonElement("name")]
         public string Name { get; set; } = string.Empty;
         [BsonElement("description")]
@@ -19,7 +19,8 @@ namespace TheExchangeApi.Models
         [BsonElement("quantity")]
         public int Quantity { get; set; } = 0;
         [BsonElement("addedBy")]
-        public string AddedBy { get; set; } = string.Empty; 
+        public string AddedBy { get; set; } = string.Empty;
+        [BsonElement("version")]
         public long Version { get; set; } = 0;
     }
 }
