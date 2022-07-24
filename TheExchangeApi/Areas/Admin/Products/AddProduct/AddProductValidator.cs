@@ -17,14 +17,11 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             RuleFor(p => p.Price)
                 .NotEmpty()
                 .GreaterThanOrEqualTo(0);
-            RuleFor(p => p.IsAvailable)
+            RuleFor(p => p.IsActive)
                 .NotEmpty();
             RuleFor(p => p.Quantity)
                 .NotEmpty()
                 .GreaterThanOrEqualTo(0);
-            RuleFor(p => p.AddedBy)
-                .NotEmpty()
-                .EmailAddress();
         }
     }
 }

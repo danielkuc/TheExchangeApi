@@ -14,12 +14,10 @@ namespace TheExchangeApi.Models
         public string Description { get; set; } = string.Empty;
         [BsonElement("price")]
         public double Price { get; set; } = 0.00;
-        [BsonElement("isAvailable")]
-        public bool IsAvailable { get; set; }
+        [BsonElement("isActive")]
+        public bool IsActive { get; set; }
         [BsonElement("quantity")]
         public int Quantity { get; set; } = 0;
-        [BsonElement("addedBy")]
-        public string AddedBy { get; set; } = string.Empty;
         [BsonElement("version")]
         public long Version { get; set; } = 0;
     }

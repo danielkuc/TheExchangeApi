@@ -22,7 +22,7 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
             {
                 await _collection.FindOneAndUpdateAsync(
                     p => p.Id == request.Id,
-                    Builders<Product>.Update.Set(p => p.IsAvailable, false),
+                    Builders<Product>.Update.Set(p => p.IsActive, false),
                     cancellationToken: cancellationToken
                     );
                 return await Task.FromResult(new Response());

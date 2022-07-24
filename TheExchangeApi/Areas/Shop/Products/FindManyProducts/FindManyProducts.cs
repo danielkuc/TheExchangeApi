@@ -20,7 +20,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindManyProducts
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var query = _collection.AsQueryable().Where(p => p.IsAvailable);
+                var query = _collection.AsQueryable().Where(p => p.IsActive);
 
                 if (!string.IsNullOrWhiteSpace(request.Name))
                     query = query.Where(p => p.Name.Contains(request.Name));

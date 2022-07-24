@@ -11,9 +11,8 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             public string Name { get; set; } = string.Empty;
             public string Description { get; set; } = string.Empty;
             public double Price { get; set; }
-            public bool IsAvailable { get; set; }
+            public bool IsActive { get; set; }
             public int Quantity { get; set; }
-            public string AddedBy { get; set; } = string.Empty;
         }
 
         public record Response;
@@ -33,9 +32,8 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
                                 Name = request.Name,
                                 Description = request.Description,
                                 Price = request.Price,
-                                IsAvailable = request.IsAvailable,
-                                Quantity = request.Quantity,
-                                AddedBy = request.AddedBy
+                                IsActive = request.IsActive,
+                                Quantity = request.Quantity
                               };
 
                 await _collection.InsertOneAsync(newProduct, cancellationToken: cancellationToken);

@@ -15,8 +15,10 @@ namespace TheExchangeApi.PipelineBehaviours
             if (_validators.Any())
             {
                 var context = new ValidationContext<TRequest>(request);
-                var validationResults = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
-                var failures = validationResults.SelectMany(result => result.Errors).Where(failure => failure != null).ToList();
+                var validationResults = await Task
+                    .WhenAll(_validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
+                var failures = validationResults
+                    .SelectMany(result => result.Errors).Where(failure => failure != null).ToList();
                 if (failures.Count != 0)
                     throw new ValidationException(failures);
             }
