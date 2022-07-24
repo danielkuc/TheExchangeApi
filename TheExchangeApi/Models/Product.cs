@@ -19,6 +19,6 @@ namespace TheExchangeApi.Models
         [BsonElement("quantity")]
         public int Quantity { get; set; } = 0;
         [BsonElement("version")]
-        public long Version { get; set; } = 0;
+        public Guid Version { get; set; } = new Guid();
     }
 }

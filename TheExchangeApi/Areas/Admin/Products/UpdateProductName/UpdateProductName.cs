@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using MongoDB.Driver;
+using MongoDB.Bson;
 using TheExchangeApi.Models;
 using Polly;
 
-namespace TheExchangeApi.Areas.Admin.Products.UpdateProduct
+namespace TheExchangeApi.Areas.Admin.Products.UpdateProductName
 {
-    public class UpdateProduct
+    public class UpdateProductName
     {
-        public record Request (Product ProductToUpdate) : IRequest<Response>;
+        public record Request(Product ProductToUpdate) : IRequest<Response>;
         public record Response;
-
         public class RequestHandler : IRequestHandler<Request, Response>
         {
             private readonly IMongoCollection<Product> _collection;
@@ -18,7 +18,6 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProduct
             {
                 _collection = collection;
             }
-
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var dbProduct = _collection.AsQueryable()
@@ -29,19 +28,22 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProduct
 
                 var retryPolicy = Policy.Handle<Exception>().Retry(retryCount: 3);
 
-                if (newProduct.Version != dbProduct.Version)
+                if (request.ProductToUpdate.Version != dbProduct.Version)
                 {
-                    throw new Exception($"Failed to update document. Database version='{dbProduct.Version}' Current version='{request.ProductToUpdate.Version}'");
+                    throw new Exception($"Failed to update document. Database version='{dbProduct.Version}' Current version='{newProduct.Version}'");
                 }
+
                 newProduct.Version = new Guid();
+
                 _collection
                     .ReplaceOne(p => p.Id == newProduct.Id,
-                                newProduct,
-                                new ReplaceOptions { IsUpsert = false},
-                                cancellationToken: cancellationToken);
-                
+                    request.ProductToUpdate,
+                    new ReplaceOptions { IsUpsert = false },
+                    cancellationToken: cancellationToken);
+
                 return await Task.FromResult(new Response());
             }
         }
+
     }
 }
