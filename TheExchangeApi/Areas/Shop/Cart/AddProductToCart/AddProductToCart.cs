@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TheExchangeApi.Models;
 using MongoDB.Driver;
+using TheExchangeApi.Models.Cart;
 
 namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
 {
