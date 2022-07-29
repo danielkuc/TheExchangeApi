@@ -14,5 +14,17 @@ namespace TheExchangeApi.Models.Cart
         {
             public Guid OrderId { get; set; }
         }
+
+        public class Handler : IRequestHandler<Request, Response>
+        {
+            public Handler()
+            {
+
+            }
+            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
