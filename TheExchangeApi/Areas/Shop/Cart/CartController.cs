@@ -3,6 +3,8 @@ using TheExchangeApi.Models;
 using MediatR;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using TheExchangeApi.Models.Cart;
 
 namespace TheExchangeApi.Areas.Shop.Cart
 {
@@ -17,10 +19,18 @@ namespace TheExchangeApi.Areas.Shop.Cart
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> AddItem(ObjectId id)
+        public async Task<IActionResult> AddItem(ObjectId id, ShoppingCart cart)
         {
             var product = _collection.AsQueryable().First(p => p.Id == id);
-            throw new NotImplementedException();
+            var shoppingCart = GetCart();
+            cart.IncrementQuantity(product);
+            HttpContext.Session.SetString("Cart", shoppingCart.ToString());
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        private ShoppingCart GetCart()
+        {
+            return new ShoppingCart();
         }
     }
 }
