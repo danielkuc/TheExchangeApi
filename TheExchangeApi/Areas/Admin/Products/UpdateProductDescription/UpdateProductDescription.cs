@@ -3,9 +3,9 @@ using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Polly;
 
-namespace TheExchangeApi.Areas.Admin.Products.UpdateProductName
+namespace TheExchangeApi.Areas.Admin.Products.UpdateProductDescription
 {
-    public class UpdateProductName
+    public class UpdateProductDescription
     {
         public record Request(Product ProductToUpdate) : IRequest<Response>;
         public record Response;

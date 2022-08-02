@@ -19,18 +19,22 @@ namespace TheExchangeApi.Areas.Shop.Cart
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> AddItem(ObjectId id, ShoppingCart cart)
+        [Route("admin/cart.item.add")]
+        [HttpGet]
+        public async Task<ShoppingCart> AddItem(ObjectId id)
         {
             var product = _collection.AsQueryable().First(p => p.Id == id);
             var shoppingCart = GetCart();
- 
-            cart.IncrementQuantity(product);
+
+            shoppingCart.IncrementQuantity(product);
+
+            HttpContext.Session.SetString("Cart", shoppingCart.ToString());
             
-           HttpContext.Session.SetString("Cart", shoppingCart.ToString());
-            
-            return Redirect(Request.Headers["Referer"].ToString());
+            return await Task.FromResult(shoppingCart);
         }
 
+        [Route("admin/cart.checkout")]
+        [HttpGet]
         public async Task<IActionResult> Checkout()
         {
             var cart = GetCart();
