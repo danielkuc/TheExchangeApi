@@ -23,9 +23,21 @@ namespace TheExchangeApi.Areas.Shop.Cart
         {
             var product = _collection.AsQueryable().First(p => p.Id == id);
             var shoppingCart = GetCart();
+ 
             cart.IncrementQuantity(product);
-            HttpContext.Session.SetString("Cart", shoppingCart.ToString());
+            
+           HttpContext.Session.SetString("Cart", shoppingCart.ToString());
+            
             return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        public async Task<IActionResult> Checkout()
+        {
+            var cart = GetCart();
+            var request = new Checkout.Request { Cart = cart };
+            var response = await _mediator.Send(request);
+            HttpContext.Session.SetString("Cart", cart.ToString());
+            return RedirectToPage("/Orders/Show", new { id = response.OrderId });
         }
 
         private ShoppingCart GetCart()
