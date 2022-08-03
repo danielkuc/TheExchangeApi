@@ -3,7 +3,7 @@ using TheExchangeApi.Models;
 using MediatR;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using System.Web;
 using TheExchangeApi.Models.Cart;
 
 namespace TheExchangeApi.Areas.Shop.Cart
@@ -12,11 +12,13 @@ namespace TheExchangeApi.Areas.Shop.Cart
     {
         private readonly IMongoCollection<Product> _collection;
         private readonly IMediator _mediator;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CartController(IMongoCollection<Product> collection, IMediator mediator)
+        public CartController(IMongoCollection<Product> collection, IMediator mediator, IHttpContextAccessor httpContextAccessor)
         {
             _collection = collection;
             _mediator = mediator;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [Route("admin/cart.item.add")]
@@ -48,5 +50,16 @@ namespace TheExchangeApi.Areas.Shop.Cart
         {
             return new ShoppingCart();
         }
+
+        private byte[] GetCartId()
+        {
+            if(!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out var cart))
+            {
+                _httpContextAccessor.HttpContext.Session.Set("CartId", new Guid().ToByteArray());
+            };
+            return cart;
+        }
+            
+
     }
 }
