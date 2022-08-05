@@ -2,6 +2,8 @@
 using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Polly;
+using MongoDB.Bson;
+using System.Reflection.Metadata;
 
 namespace TheExchangeApi.Areas.Admin.Products.UpdateProductName
 {
@@ -19,26 +21,21 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductName
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dbProduct = _collection.AsQueryable()
-                    .Where(p => p.Id == request.ProductToUpdate.Id)
-                    .Single();
-
-                var newProduct = request.ProductToUpdate;
-
+                //var queryId = new ObjectId(request.ProductToUpdate.Id);
+                var dbProduct = _collection.Find(p => p.Id == request.ProductToUpdate.Id).SingleAsync();
                 var retryPolicy = Policy.Handle<Exception>().Retry(retryCount: 3);
 
-                if (request.ProductToUpdate.Version != dbProduct.Version)
+                if (request.ProductToUpdate.Version != dbProduct.Result.Version)
                 {
-                    throw new Exception($"Failed to update document. Database version='{dbProduct.Version}' Current version='{newProduct.Version}'");
+                    throw new Exception($"Failed to update document. Database version='{dbProduct.Result.Version}' Current version='{request.ProductToUpdate.Version}'");
                 }
 
-                newProduct.Version = new Guid();
+                var NewVersion = Guid.NewGuid();
 
-                _collection
-                    .ReplaceOne(p => p.Id == newProduct.Id,
-                    request.ProductToUpdate,
-                    new ReplaceOptions { IsUpsert = false },
-                    cancellationToken: cancellationToken);
+                _collection.UpdateOne(p => p.Id == request.ProductToUpdate.Id, Builders<Product>
+                                            .Update
+                                            .Set(p => p.Name, request.ProductToUpdate.Name)
+                                            .Set(p => p.Version, NewVersion));
 
                 return await Task.FromResult(new Response());
             }

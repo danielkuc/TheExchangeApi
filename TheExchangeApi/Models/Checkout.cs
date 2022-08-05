@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace TheExchangeApi.Models.Cart
+namespace TheExchangeApi.Models
 {
     public class Checkout
     {

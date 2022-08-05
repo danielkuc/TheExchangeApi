@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace TheExchangeApi.Models.Cart
+namespace TheExchangeApi.Models
 {
     public class ShoppingCart
     {

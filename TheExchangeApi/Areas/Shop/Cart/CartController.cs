@@ -4,7 +4,6 @@ using MediatR;
 using MongoDB.Bson;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
-using TheExchangeApi.Models.Cart;
 
 namespace TheExchangeApi.Areas.Shop.Cart
 {
