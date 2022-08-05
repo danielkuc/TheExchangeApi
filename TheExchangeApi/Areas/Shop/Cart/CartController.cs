@@ -21,15 +21,25 @@ namespace TheExchangeApi.Areas.Shop.Cart
         }
 
         [Route("admin/cart.item.add")]
-        [HttpGet]
+        [HttpPost]
         public async Task<ShoppingCart> AddItem(ObjectId id)
         {
+            if (!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out var cartId))
+            {
+                _httpContextAccessor.HttpContext.Session.Set("CartId", new Guid().ToByteArray());
+            }
+
             var product = _collection.AsQueryable().First(p => p.Id == id);
+            //check if sessionId exists in the DB
+            //change product to CartProduct
+            //add CartProduct to new ShoppingCart
+            //Increment added product
+            //save shopping cart to database
+
             var shoppingCart = GetCart();
 
             shoppingCart.IncrementQuantity(product);
 
-            HttpContext.Session.SetString("Cart", shoppingCart.ToString());
             
             return await Task.FromResult(shoppingCart);
         }
@@ -49,16 +59,7 @@ namespace TheExchangeApi.Areas.Shop.Cart
         {
             return new ShoppingCart();
         }
-
-        private byte[] GetCartId()
-        {
-            if(!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out var cart))
-            {
-                _httpContextAccessor.HttpContext.Session.Set("CartId", new Guid().ToByteArray());
-            };
-            return cart;
-        }
-            
+           
 
     }
 }
