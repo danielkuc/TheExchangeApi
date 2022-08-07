@@ -6,13 +6,13 @@ namespace TheExchangeApi.Models
     {
         public ShoppingCart(byte[] cartId)
         {
-            Products ??= new Dictionary<ObjectId, CartProduct>();
+            Products ??= new Dictionary<string, CartProduct>();
             CartId = cartId;
         }
 
         public double Total => Products.Sum(cp => cp.Value.SubTotal);
 
-        public Dictionary<ObjectId, CartProduct> Products { get; set; }
+        public Dictionary<string, CartProduct> Products { get; set; }
         public byte[] CartId { get; }
 
         public void IncrementQuantity(Product product)

@@ -26,7 +26,7 @@ namespace TheExchangeApi.Areas.Shop.Cart
 
         [Route("admin/cart.item.add")]
         [HttpPost]
-        public async Task<ShoppingCart> AddItem(ObjectId id)
+        public async Task<ShoppingCart> AddItem(string id)
         {
             var product = _productCollection.AsQueryable().First(p => p.Id == id);
             var newCartId = GetCartId();

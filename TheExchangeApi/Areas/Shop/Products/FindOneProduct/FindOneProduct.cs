@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Shop.Products.FindOneProduct
 {
     public class FindOneProduct
     {
-        public record ProductRequest(ObjectId Id) : IRequest<Response>;
+        public record ProductRequest(string Id) : IRequest<Response>;
         public record Response(Product Product);
 
         public class RequestHandler : IRequestHandler<ProductRequest, Response>

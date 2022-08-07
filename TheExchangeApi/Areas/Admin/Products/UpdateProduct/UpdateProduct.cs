@@ -33,7 +33,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProduct
                 {
                     throw new Exception($"Failed to update document. Database version='{dbProduct.Version}' Current version='{request.ProductToUpdate.Version}'");
                 }
-                newProduct.Version = new Guid();
+                newProduct.Version = Guid.NewGuid();
                 _collection
                     .ReplaceOne(p => p.Id == newProduct.Id,
                                 newProduct,

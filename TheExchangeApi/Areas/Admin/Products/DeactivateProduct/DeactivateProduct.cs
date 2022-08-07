@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Admin.Products.DeactivateProduct
 {
     public class DeactivateProduct
     {
-        public record Request(ObjectId Id) : IRequest<Response>;
+        public record Request(string Id) : IRequest<Response>;
         public record Response();
 
         public class RequestHandler : IRequestHandler<Request, Response>
