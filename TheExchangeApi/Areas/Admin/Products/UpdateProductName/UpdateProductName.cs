@@ -2,8 +2,6 @@
 using MongoDB.Driver;
 using TheExchangeApi.Models;
 using Polly;
-using MongoDB.Bson;
-using System.Reflection.Metadata;
 
 namespace TheExchangeApi.Areas.Admin.Products.UpdateProductName
 {
@@ -21,7 +19,6 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductName
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                //var queryId = new ObjectId(request.ProductToUpdate.Id);
                 var dbProduct = _collection.Find(p => p.Id == request.ProductToUpdate.Id).SingleAsync();
                 var retryPolicy = Policy.Handle<Exception>().Retry(retryCount: 3);
 
