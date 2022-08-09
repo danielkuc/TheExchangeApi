@@ -4,7 +4,6 @@ namespace TheExchangeApi.Models
 {
     public class CartProduct
     {
-        public CartProduct() { }
         public CartProduct(Product product)
         {
             Id = product.Id;

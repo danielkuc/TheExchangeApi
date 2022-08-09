@@ -99,6 +99,7 @@ void RegisterIMongoCollection()
     //);
 
     builder.Services.AddSingleton<IMongoCollection<Product>>(productCollection);
+    builder.Services.AddSingleton<IMongoCollection<ShoppingCart>>(cartsCollection);
 }
 
 

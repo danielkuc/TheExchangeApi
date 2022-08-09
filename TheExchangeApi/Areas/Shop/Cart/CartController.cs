@@ -29,7 +29,8 @@ namespace TheExchangeApi.Areas.Shop.Cart
         public async Task<ShoppingCart> AddItem(string id)
         {
             var product = _productCollection.AsQueryable().First(p => p.Id == id);
-            var newCartId = GetCartId();
+            //var newCartId = GetCartId();
+            var newCartId = Guid.NewGuid().ToByteArray();
             if(_cartCollection.AsQueryable().Count(sc => sc.CartId == newCartId) > 0)
             {
                 var existingCart = _cartCollection.AsQueryable().Where(sc => sc.CartId == newCartId).Single();
