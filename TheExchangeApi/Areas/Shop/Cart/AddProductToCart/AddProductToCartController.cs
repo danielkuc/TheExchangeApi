@@ -4,7 +4,7 @@ using static TheExchangeApi.Areas.Shop.Cart.AddProductToCart.AddProductToCart;
 
 namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
 {
-    [Route("shop/cart.add")]
+    [Route("shop/cart.product.add")]
     public class AddProductToCartController : BaseShopController
     {
         [HttpPost]

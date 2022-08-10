@@ -24,7 +24,7 @@ namespace TheExchangeApi.Areas.Shop.Cart
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [Route("admin/cart.item.add")]
+        [Route("admin/cart.item.old")]
         [HttpPost]
         public async Task<ShoppingCart> AddItem(string id)
         {
