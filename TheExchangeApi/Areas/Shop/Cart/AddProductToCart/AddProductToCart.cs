@@ -28,8 +28,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Product.Id).Single();
-                // var newCartId = GetCartId();
-                var newCartId = Guid.NewGuid().ToByteArray();
+                var newCartId = GetCartId();
                 var newShoppingCart = new ShoppingCart(newCartId);
                 newShoppingCart.IncrementQuantity(productFromDb);
                 await _cartsCollection.InsertOneAsync(newShoppingCart, cancellationToken: cancellationToken);

@@ -4,7 +4,7 @@ using static TheExchangeApi.Areas.Admin.Products.UpdateProductPrice.UpdateProduc
 
 namespace TheExchangeApi.Areas.Admin.Products.UpdateProductPrice
 {
-    [Route("admin/product.update.name")]
+    [Route("admin/product.update.price")]
     public class UpdateProductPriceController : AccessController
     {
         [HttpPost]

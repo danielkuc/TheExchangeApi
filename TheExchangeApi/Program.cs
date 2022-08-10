@@ -28,6 +28,7 @@ JwtAuthentication();
 
 AddAuthPolicies();
 
+RegisterSession();
 
 void RegisterHttpAccessor()
 {
@@ -96,6 +97,16 @@ void RegisterIMongoCollection()
     builder.Services.AddSingleton(productCollection);
     builder.Services.AddSingleton(cartsCollection);
 }
+void RegisterSession()
+{
+    builder.Services.AddDistributedMemoryCache();
+    builder.Services.AddSession(options =>
+    {
+        options.IdleTimeout = TimeSpan.FromMinutes(10);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    });
+}
 
 
 var app = builder.Build();
@@ -109,11 +120,11 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler("/error");
 
 app.UseCors();
+app.UseSession();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 
