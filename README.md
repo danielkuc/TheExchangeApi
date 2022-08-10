@@ -14,7 +14,6 @@ I picked an e-commerce platform simply because I love them, I enjoy disecting on
 ## What it does?
 TheExchange is an app which allows users to create and managed product saved in a non relational database,
 product management is limited to useres with right credentials (using Auth0).
-It also implements a functioning shopping cart, which saves an Id of the cart in the session and persists the cart in a database.
 
 ## Technologies
  * C#
