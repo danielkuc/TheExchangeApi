@@ -92,14 +92,9 @@ void RegisterIMongoCollection()
     var database = client.GetDatabase(builder.Configuration.GetValue<string>("ProductDatabase:DatabaseName"));
     var productCollection = database.GetCollection<Product>(builder.Configuration.GetValue<string>("ProductDatabase:ProductsCollectionName"));
     var cartsCollection = database.GetCollection<ShoppingCart>(builder.Configuration.GetValue<string>("ProductDatabase:CartsCollectionName"));
-    //builder.Services.AddSingleton(singleton =>
-    //new MongoClient(builder.Configuration.GetValue<string>("ProductDatabase:ConnectionString"))
-    //    .GetDatabase(builder.Configuration.GetValue<string>("ProductDatabase:DatabaseName"))
-    //    .GetCollection<Product>(builder.Configuration.GetValue<string>("ProductDatabase:ProductsCollectionName"))
-    //);
 
-    builder.Services.AddSingleton<IMongoCollection<Product>>(productCollection);
-    builder.Services.AddSingleton<IMongoCollection<ShoppingCart>>(cartsCollection);
+    builder.Services.AddSingleton(productCollection);
+    builder.Services.AddSingleton(cartsCollection);
 }
 
 

@@ -28,13 +28,15 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Product.Id).Single();
-                var newCartId = GetCartId();
-
-
+                // var newCartId = GetCartId();
+                var newCartId = Guid.NewGuid().ToByteArray();
+                var newCartProduct = new CartProduct(productFromDb)
+                {
+                    Quantity = 1
+                };
                 var newShoppingCart = new ShoppingCart(newCartId);
-                newShoppingCart.IncrementQuantity(productFromDb);
-                
-                await _cartsCollection.InsertOneAsync(newShoppingCart);
+                newShoppingCart.Products.Add(newCartProduct.Id, newCartProduct);
+                await _cartsCollection.InsertOneAsync(newShoppingCart, cancellationToken: cancellationToken);
                 return await Task.FromResult(new Response());
             }
 
