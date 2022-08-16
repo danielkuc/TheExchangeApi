@@ -7,7 +7,6 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
     public class AddProductToCart
     {
         public record Request(Product Product) : IRequest<Response>;
-
         public record Response;
         public class RequestHandler : IRequestHandler<Request, Response>
         {
