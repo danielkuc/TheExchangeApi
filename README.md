@@ -29,7 +29,6 @@ product management is limited to useres with right credentials (using Auth0).
  * CQRS
  * vertical slice
  ### Front End
- * React JS
+ * React
  * Bootstrap
  * React Router
- * Bootstrap
