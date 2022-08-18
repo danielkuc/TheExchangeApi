@@ -1,4 +1,4 @@
-# TheExchangeApi - e-commerce API.
+# TheExchangeApi - e-commerce platform.
 Project built as a showcase of my skills, a functioning e-Commerce Web API and two frontend projects in seperate GitHub repos.
 
 ## Table of contents
