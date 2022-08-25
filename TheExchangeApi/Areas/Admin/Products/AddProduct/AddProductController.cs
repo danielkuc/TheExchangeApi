@@ -10,7 +10,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 
         [HttpPost]
         public async Task<Response> Action(
-            [FromBody] Request request,
+            [FromForm] Request request,
             [FromServices] ISender mediator,
             CancellationToken cancellationToken)
             => await mediator.Send(request, cancellationToken);
