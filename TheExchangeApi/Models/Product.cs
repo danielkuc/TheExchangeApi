@@ -20,5 +20,6 @@ namespace TheExchangeApi.Models
         public int Quantity { get; set; } = 0;
         [BsonElement("version")]
         public Guid Version { get; set; } = Guid.NewGuid();
+        public IFormFile Image { get; set; }
     }
 }
