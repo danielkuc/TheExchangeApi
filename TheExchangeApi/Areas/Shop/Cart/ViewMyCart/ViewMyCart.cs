@@ -7,7 +7,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.ViewMyCart;
 public class ViewMyCart
 {
     public record Request() : IRequest<Response>;
-    public record Response(ShoppingCart RetreivedShoppingCart);
+    public record Response(ShoppingCart ShoppingCartFromDB);
     public class RequestHandler : IRequestHandler<Request, Response>
     {
         private readonly IMongoCollection<ShoppingCart> _collection;
