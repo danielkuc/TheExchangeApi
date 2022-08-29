@@ -27,24 +27,6 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Product.Id).Single();
-                var CartId = GetCartId();
-
-                if (!_cartsCollection.AsQueryable().Any(c => c.CartId == CartId))
-                {
-                    var newShoppingCart = new ShoppingCart(CartId);
-                    newShoppingCart.IncrementQuantity(productFromDb);
-                    await _cartsCollection.InsertOneAsync(newShoppingCart, cancellationToken: cancellationToken);
-                    return await Task.FromResult(new Response());
-                }
-
-                var shoppingCart = _cartsCollection.AsQueryable().Where(c => c.CartId == CartId).First();
-                shoppingCart.IncrementQuantity(productFromDb);
-                await _cartsCollection.ReplaceOneAsync(c => c.CartId == CartId, shoppingCart, cancellationToken: cancellationToken);
-                return await Task.FromResult(new Response());
-            }
-
-            private byte[] GetCartId()
-            {
                 var cartId = new byte[] { };
 
                 if (!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out cartId))
@@ -53,7 +35,20 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
                     _httpContextAccessor.HttpContext.Session.Set("CartId", newId);
                     cartId = newId;
                 }
-                return cartId;
+
+                if (!_cartsCollection.AsQueryable().Any(c => c.CartId == cartId))
+                {
+                    var newShoppingCart = new ShoppingCart(cartId);
+                    newShoppingCart.IncrementQuantity(productFromDb);
+                    await _cartsCollection.InsertOneAsync(newShoppingCart, cancellationToken: cancellationToken);
+                    return await Task.FromResult(new Response());
+                }
+
+                var shoppingCart = _cartsCollection.AsQueryable().Where(c => c.CartId == cartId).First();
+                shoppingCart.IncrementQuantity(productFromDb);
+                await _cartsCollection
+                    .ReplaceOneAsync(c => c.CartId == cartId, shoppingCart, cancellationToken: cancellationToken);
+                return await Task.FromResult(new Response());
             }
         }
     }
