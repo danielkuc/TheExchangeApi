@@ -16,7 +16,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
             public IFormFile Image { get; set; }
         }
 
-        public record Response(Request Request);
+        public record Response;
 
         public class RequestHandler : IRequestHandler<Request, Response>
         {
@@ -39,7 +39,7 @@ namespace TheExchangeApi.Areas.Admin.Products.AddProduct
 
                 await _collection.InsertOneAsync(newProduct, cancellationToken: cancellationToken);
 
-                return await Task.FromResult(new Response(request));
+                return await Task.FromResult(new Response());
             }
         }
     }
