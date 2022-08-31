@@ -6,8 +6,8 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
 {
     public class AddProductToCart
     {
-        public record Request(Product Product) : IRequest<Response>;
-        public record Response;
+        public record Request(string Id) : IRequest<Response>;
+        public record Response(string response);
         public class RequestHandler : IRequestHandler<Request, Response>
         {
             private readonly IMongoCollection<Product> _productCollection;
@@ -26,29 +26,22 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Product.Id).Single();
-                var cartId = new byte[] { };
-
-                if (!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out cartId))
+                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Id).Single();
+                if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
-                    var newId = Guid.NewGuid().ToByteArray();
-                    _httpContextAccessor.HttpContext.Session.Set("CartId", newId);
-                    cartId = newId;
+                    var newCart = new ShoppingCart();
+                    _httpContextAccessor.HttpContext.Session.SetString("CartId", newCart.Id);
+                    newCart.IncrementQuantity(productFromDb);
+                    await _cartsCollection.InsertOneAsync(newCart,cancellationToken: cancellationToken);
+                    return await Task.FromResult(new Response("new cart"));
                 }
 
-                if (!_cartsCollection.AsQueryable().Any(c => c.CartId == cartId))
-                {
-                    var newShoppingCart = new ShoppingCart(cartId);
-                    newShoppingCart.IncrementQuantity(productFromDb);
-                    await _cartsCollection.InsertOneAsync(newShoppingCart, cancellationToken: cancellationToken);
-                    return await Task.FromResult(new Response());
-                }
-
-                var shoppingCart = _cartsCollection.AsQueryable().Where(c => c.CartId == cartId).First();
-                shoppingCart.IncrementQuantity(productFromDb);
+                var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
+                var cartFromDB = _cartsCollection.AsQueryable().Where(c => c.Id == cartId).Single();
+                cartFromDB.IncrementQuantity(productFromDb);
                 await _cartsCollection
-                    .ReplaceOneAsync(c => c.CartId == cartId, shoppingCart, cancellationToken: cancellationToken);
-                return await Task.FromResult(new Response());
+                    .ReplaceOneAsync(c => c.Id == cartId, cartFromDB, cancellationToken: cancellationToken);
+                return await Task.FromResult(new Response("old cart"));
             }
         }
     }

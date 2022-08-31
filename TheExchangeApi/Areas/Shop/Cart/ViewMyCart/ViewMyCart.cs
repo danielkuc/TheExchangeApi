@@ -21,13 +21,14 @@ public class ViewMyCart
 
         public Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            if (!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out var cartId))
-            {
-               throw new ArgumentNullException(nameof(cartId));
-            }
+            //if (!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out var cartId))
+            //{
+            //   throw new ArgumentNullException(nameof(cartId));
+            //}
 
-            var shoppingCartFromDB = _collection.AsQueryable().Where(c => c.CartId == cartId).First();
-            return Task.FromResult(new Response(shoppingCartFromDB));
+            //var shoppingCartFromDB = _collection.AsQueryable().Where(c => c.CartId == cartId).First();
+            //return Task.FromResult(new Response(shoppingCartFromDB));
+            throw new NotImplementedException();
         }
     }
 }
