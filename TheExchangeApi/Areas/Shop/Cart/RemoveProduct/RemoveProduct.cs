@@ -39,6 +39,5 @@ namespace TheExchangeApi.Areas.Shop.Cart.RemoveProduct
                 return await Task.FromResult(new Response());
             }
         }
-:
     }
 }
