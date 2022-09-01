@@ -2,12 +2,12 @@
 using TheExchangeApi.Models;
 using MongoDB.Driver;
 
-namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
+namespace TheExchangeApi.Areas.Shop.Cart.DecrementProductQuantity
 {
-    public class AddProductToCart
+    public class DecrementProductQuantity
     {
         public record Request(string Id) : IRequest<Response>;
-        public record Response(string response);
+        public record Response;
         public class RequestHandler : IRequestHandler<Request, Response>
         {
             private readonly IMongoCollection<Product> _productCollection;
@@ -15,9 +15,9 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
             private readonly IHttpContextAccessor _httpContextAccessor;
 
             public RequestHandler(
-                IMongoCollection<Product> productCollection
-                ,IMongoCollection<ShoppingCart> cartCollection
-                ,IHttpContextAccessor accessor
+                  IMongoCollection<Product> productCollection
+                , IMongoCollection<ShoppingCart> cartCollection
+                , IHttpContextAccessor accessor
                 )
             {
                 _productCollection = productCollection;
@@ -29,11 +29,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
                 var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Id).Single();
                 if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
-                    var newCart = new ShoppingCart();
-                    _httpContextAccessor.HttpContext.Session.SetString("CartId", newCart.Id);
-                    newCart.IncrementQuantity(productFromDb);
-                    await _cartCollection.InsertOneAsync(newCart,cancellationToken: cancellationToken);
-                    return await Task.FromResult(new Response("new cart"));
+                    throw new ArgumentNullException("Cart doesn't exist");
                 }
 
                 var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
@@ -41,7 +37,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.AddProductToCart
                 cartFromDB.IncrementQuantity(productFromDb);
                 await _cartCollection
                     .ReplaceOneAsync(c => c.Id == cartId, cartFromDB, cancellationToken: cancellationToken);
-                return await Task.FromResult(new Response("old cart"));
+                return await Task.FromResult(new Response());
             }
         }
     }

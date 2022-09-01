@@ -9,7 +9,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.ViewMyCart
     {
         [HttpGet]
         public async Task<Response> Action(
-        [FromBody] Request request,
+        [FromQuery] Request request,
         [FromServices] ISender mediator,
         CancellationToken cancellationToken)
         => await mediator.Send(request, cancellationToken);
