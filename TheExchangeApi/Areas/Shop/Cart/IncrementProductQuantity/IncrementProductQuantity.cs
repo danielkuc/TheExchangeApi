@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.IncrementProductQuantity
 {
     public class IncrementProductQuantity
     {
-        public record Request(string Id) : IRequest<Response>;
+        public record Request(Product product) : IRequest<Response>;
         public record Response;
         public class RequestHandler : IRequestHandler<Request, Response>
         {
@@ -26,7 +26,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.IncrementProductQuantity
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Id).Single();
+                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.product.Id).Single();
                 if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
                     throw new ArgumentNullException("Cart doesn't exist");

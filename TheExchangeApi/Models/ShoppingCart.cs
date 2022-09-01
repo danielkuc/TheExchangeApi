@@ -11,7 +11,6 @@ namespace TheExchangeApi.Models
         }
 
         [BsonId]
-        //[BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = Guid.NewGuid().ToString(); 
         public double Total => Products.Sum(cp => cp.Value.SubTotal);
         public Dictionary<string, CartProduct> Products { get; set; }

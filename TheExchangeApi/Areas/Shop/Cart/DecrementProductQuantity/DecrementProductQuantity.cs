@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.DecrementProductQuantity
 {
     public class DecrementProductQuantity
     {
-        public record Request(string Id) : IRequest<Response>;
+        public record Request(Product product) : IRequest<Response>;
         public record Response;
         public class RequestHandler : IRequestHandler<Request, Response>
         {
@@ -26,10 +26,10 @@ namespace TheExchangeApi.Areas.Shop.Cart.DecrementProductQuantity
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Id).Single();
+                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.product.Id).Single();
                 if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
-                    throw new ArgumentNullException("Cart doesn't exist");
+                    throw new ArgumentNullException("Cart is null");
                 }
 
                 var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");

@@ -23,7 +23,7 @@ public class ViewMyCart
         {
             if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
             {
-               throw new ArgumentNullException("Cart doestn't exist");
+               throw new ArgumentNullException("Cart is null");
             }
 
             var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
