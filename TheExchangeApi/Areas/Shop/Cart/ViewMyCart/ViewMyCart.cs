@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.ViewMyCart;
 
 public class ViewMyCart
 {
-    public record Request() : IRequest<Response>;
+    public record Request : IRequest<Response>;
     public record Response(ShoppingCart ShoppingCartFromDB);
     public class RequestHandler : IRequestHandler<Request, Response>
     {
@@ -21,14 +21,13 @@ public class ViewMyCart
 
         public Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
-            //if (!_httpContextAccessor.HttpContext.Session.TryGetValue("CartId", out var cartId))
-            //{
-            //   throw new ArgumentNullException(nameof(cartId));
-            //}
+            if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
+            {
+               throw new ArgumentNullException("Cart doestn't exist");
+            }
 
-            //var shoppingCartFromDB = _collection.AsQueryable().Where(c => c.CartId == cartId).First();
-            //return Task.FromResult(new Response(shoppingCartFromDB));
-            throw new NotImplementedException();
-        }
+            var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
+            var shoppingCartFromDB = _collection.AsQueryable().Where(c => c.Id == cartId).First();
+            return Task.FromResult(new Response(shoppingCartFromDB));        }
     }
 }
