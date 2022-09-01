@@ -21,7 +21,7 @@
   <ItemGroup>
     <Folder Include="Areas\Shop\Cart\CartCheckout\" />
     <Folder Include="Areas\Shop\Cart\ConvertCartToOrder\" />
-    <Folder Include="Areas\Shop\Cart\RemoveProductFromCart\" />
+    <Folder Include="Areas\Shop\Cart\GetTotal\" />
     <Folder Include="Areas\Shop\Orders\ListMyOrders\" />
     <Folder Include="Areas\Shop\Orders\ViewAnOrder\" />
   </ItemGroup>
