@@ -5,7 +5,7 @@ using static TheExchangeApi.Areas.Shop.Cart.RemoveProduct.RemoveProduct;
 namespace TheExchangeApi.Areas.Shop.Cart.RemoveProduct
 {
     [Route("shop/cart.product.remove")]
-    public class RemoveProductQuantityController : BaseShopController
+    public class RemoveProductController : BaseShopController
     {
         [HttpPost]
         public async Task<Response> Action(
