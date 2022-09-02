@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Shop\Cart\GetTotal\**" />
+    <Content Remove="Areas\Shop\Cart\GetTotal\**" />
+    <EmbeddedResource Remove="Areas\Shop\Cart\GetTotal\**" />
+    <None Remove="Areas\Shop\Cart\GetTotal\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.0.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.1" />
     <PackageReference Include="MediatR" Version="10.0.1" />
@@ -19,9 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Shop\Cart\CartCheckout\" />
-    <Folder Include="Areas\Shop\Cart\ConvertCartToOrder\" />
-    <Folder Include="Areas\Shop\Cart\GetTotal\" />
     <Folder Include="Areas\Shop\Orders\ListMyOrders\" />
     <Folder Include="Areas\Shop\Orders\ViewAnOrder\" />
   </ItemGroup>
