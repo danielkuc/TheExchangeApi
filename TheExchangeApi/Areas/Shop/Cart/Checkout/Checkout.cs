@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using MediatR;
+using TheExchangeApi.Models;
 
-namespace TheExchangeApi.Models
+namespace TheExchangeApi.Areas.Shop.Cart.Checkout
 {
     public class Checkout
     {
