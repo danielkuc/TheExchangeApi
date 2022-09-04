@@ -5,7 +5,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.Checkout
 {
     public class Checkout
     {
-        public record Request() : IRequest<Response>;
+        public record Request(Customer Customer) : IRequest<Response>;
         public record Response(Guid OrderId);
         public class RequestHandler : IRequestHandler<Request, Response>
         {
@@ -24,8 +24,19 @@ namespace TheExchangeApi.Areas.Shop.Cart.Checkout
                     throw new ArgumentNullException("Cart is null");
                 }
 
-                var cartFromDb = _httpContextAccessor.HttpContext.Session.GetString("CartId");
+                var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
+                var cartFromDb = _cartColletion.AsQueryable().Where(c => c.Id == cartId).Single();
+                var newCustomer = new Customer
+                {
+                    FirstName = request.Customer.FirstName,
+                    LastName = request.Customer.LastName,
+                    Email = request.Customer.Email,
+                    Mobile = request.Customer.Mobile,
+                    HouseNumber = request.Customer.HouseNumber,
+                    Town = request.Customer.Town,
+                    Postcode = request.Customer.Postcode,
 
+                };
                 throw new NotImplementedException();
             }
         }
