@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.IncrementProductQuantity
 {
     public class IncrementProductQuantity
     {
-        public record Request(Product product) : IRequest<Response>;
+        public record Request(Product Product) : IRequest<Response>;
         public record Response;
         public class RequestHandler : IRequestHandler<Request, Response>
         {
@@ -26,17 +26,17 @@ namespace TheExchangeApi.Areas.Shop.Cart.IncrementProductQuantity
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.product.Id).Single();
                 if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
-                    throw new ArgumentNullException("Cart doesn't exist");
+                    throw new ArgumentNullException("Cart is null");
                 }
 
+                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Product.Id).Single();
                 var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
-                var cartFromDB = _cartCollection.AsQueryable().Where(c => c.Id == cartId).Single();
-                cartFromDB.IncrementQuantity(productFromDb);
+                var cartFromDb = _cartCollection.AsQueryable().Where(c => c.Id == cartId).Single();
+                cartFromDb.IncrementQuantity(productFromDb);
                 await _cartCollection
-                    .ReplaceOneAsync(c => c.Id == cartId, cartFromDB, cancellationToken: cancellationToken);
+                    .ReplaceOneAsync(c => c.Id == cartId, cartFromDb, cancellationToken: cancellationToken);
                 return await Task.FromResult(new Response());
             }
         }

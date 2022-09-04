@@ -26,15 +26,16 @@ namespace TheExchangeApi.Areas.Shop.Cart.DecrementProductQuantity
             }
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.product.Id).Single();
                 if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
                     throw new ArgumentNullException("Cart is null");
                 }
 
+                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.product.Id).Single();
                 var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
                 var cartFromDB = _cartCollection.AsQueryable().Where(c => c.Id == cartId).Single();
-                cartFromDB.IncrementQuantity(productFromDb);
+
+                cartFromDB.DecrementQUantity(productFromDb);
                 await _cartCollection
                     .ReplaceOneAsync(c => c.Id == cartId, cartFromDB, cancellationToken: cancellationToken);
                 return await Task.FromResult(new Response());

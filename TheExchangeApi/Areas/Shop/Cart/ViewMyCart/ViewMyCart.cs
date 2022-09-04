@@ -27,7 +27,7 @@ public class ViewMyCart
             }
 
             var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
-            var shoppingCartFromDB = _collection.AsQueryable().Where(c => c.Id == cartId).First();
+            var shoppingCartFromDB = _collection.AsQueryable().Where(c => c.Id == cartId).Single();
             return Task.FromResult(new Response(shoppingCartFromDB));
         }
     }

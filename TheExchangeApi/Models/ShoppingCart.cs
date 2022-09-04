@@ -19,6 +19,10 @@ namespace TheExchangeApi.Models
 
         public void IncrementQuantity(Product product)
         {
+            if (product.Quantity++ > product.Quantity)
+            {
+                throw new Exception("Requested quantity surpasses stock of the item");
+            }
             if (!Products.ContainsKey(product.Id))
             {
                 Products[product.Id] = new CartProduct(product);
