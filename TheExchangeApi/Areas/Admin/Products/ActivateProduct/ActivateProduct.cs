@@ -2,12 +2,13 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using TheExchangeApi.Models;
+using FluentValidation;
 
 namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
 {
     public class ActivateProduct
     {
-        public record Request(string Id) : IRequest<Response>;
+        public record Request(Product Product) : IRequest<Response>;
         public record Response();
 
         public class RequestHandler : IRequestHandler<Request, Response>
@@ -21,12 +22,19 @@ namespace TheExchangeApi.Areas.Admin.Products.ActivateProduct
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                  await _collection.FindOneAndUpdateAsync(
-                     p => p.Id == request.Id, 
+                     p => p.Id == request.Product.Id, 
                      Builders<Product>.Update.Set(p => p.IsActive, true), 
                      cancellationToken: cancellationToken
                      );
                 return await Task.FromResult(new Response());
             }
+        }
+    }
+    public class ActivateProductValidator : AbstractValidator<ActivateProduct.Request>
+    {
+        public ActivateProductValidator()
+        {
+            RuleFor(p => p.Product.IsActive).NotEmpty();
         }
     }
 }
