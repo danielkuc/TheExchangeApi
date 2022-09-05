@@ -17,7 +17,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.Checkout
                 _cartColletion = cartColletion;
                 _httpContextAccessor = accessor;
             }
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 if (_httpContextAccessor.HttpContext.Session.GetString("CartId") == null)
                 {
@@ -26,18 +26,8 @@ namespace TheExchangeApi.Areas.Shop.Cart.Checkout
 
                 var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
                 var cartFromDb = _cartColletion.AsQueryable().Where(c => c.Id == cartId).Single();
-                var newCustomer = new Customer
-                {
-                    FirstName = request.Customer.FirstName,
-                    LastName = request.Customer.LastName,
-                    Email = request.Customer.Email,
-                    Mobile = request.Customer.Mobile,
-                    HouseNumber = request.Customer.HouseNumber,
-                    Town = request.Customer.Town,
-                    Postcode = request.Customer.Postcode,
-
-                };
-                throw new NotImplementedException();
+                var newOrder = new Order(request.Customer, cartFromDb);
+                return await Task.FromResult(new Response(newOrder.Id));
             }
         }
     }
