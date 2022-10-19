@@ -6,7 +6,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.DecrementProductQuantity
 {
     public class DecrementProductQuantity
     {
-        public record Request(Product product) : IRequest<Response>;
+        public record Request(Product Product) : IRequest<Response>;
         public record Response;
         public class RequestHandler : IRequestHandler<Request, Response>
         {
@@ -31,7 +31,7 @@ namespace TheExchangeApi.Areas.Shop.Cart.DecrementProductQuantity
                     throw new ArgumentNullException("Cart is null");
                 }
 
-                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.product.Id).Single();
+                var productFromDb = _productCollection.AsQueryable().Where(x => x.Id == request.Product.Id).Single();
                 var cartId = _httpContextAccessor.HttpContext.Session.GetString("CartId");
                 var cartFromDB = _cartCollection.AsQueryable().Where(c => c.Id == cartId).Single();
 

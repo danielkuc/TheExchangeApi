@@ -19,7 +19,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductQuantity
             }
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dbProduct = _collection.Find(p => p.Id == request.ProductToUpdate.Id).SingleAsync();
+                var dbProduct = _collection.Find(p => p.Id == request.ProductToUpdate.Id).SingleAsync(cancellationToken: cancellationToken);
                 var retryPolicy = Policy.Handle<Exception>().Retry(retryCount: 3);
 
                 if (request.ProductToUpdate.Version != dbProduct.Result.Version)
@@ -32,7 +32,7 @@ namespace TheExchangeApi.Areas.Admin.Products.UpdateProductQuantity
                 _collection.UpdateOne(p => p.Id == request.ProductToUpdate.Id, Builders<Product>
                                             .Update
                                             .Set(p => p.Quantity, request.ProductToUpdate.Quantity)
-                                            .Set(p => p.Version, NewVersion));
+                                            .Set(p => p.Version, NewVersion), cancellationToken: cancellationToken);
                 return Task.FromResult(new Response());
             }
         }
